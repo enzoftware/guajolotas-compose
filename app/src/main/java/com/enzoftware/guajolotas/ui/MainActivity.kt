@@ -1,4 +1,4 @@
-package com.enzoftware.guajolotas
+package com.enzoftware.guajolotas.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,6 +7,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.tooling.preview.Preview
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 
@@ -29,10 +31,15 @@ fun Greeting(name: String) {
     Text(text = "Hello $name!")
 }
 
+@Composable
+fun HomeHeader(){
+    Text(text = "Nada como una Guajolota para empezar el día", style = MaterialTheme.typography.h4,)
+}
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     GuajolotasTheme {
-        Greeting("Android")
+        HomeHeader()
     }
 }
