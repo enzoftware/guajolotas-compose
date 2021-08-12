@@ -42,7 +42,7 @@ fun ProductItem(product: Product) {
 @Composable
 private fun ProductItemPreview() {
     val product =
-        Food("Veggie tomato mix", price = 25.0, quantity = 0, flavor = FoodFlavors.pineapple)
+        Food("Veggie tomato mix", price = 25.0, quantity = 0, flavor = FoodFlavors.Pineapple)
     GuajolotasTheme {
         ProductItem(product = product)
     }

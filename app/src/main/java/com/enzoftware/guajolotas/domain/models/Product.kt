@@ -22,16 +22,16 @@ sealed class Product(
 }
 
 enum class DrinkFlavors {
-    chocolate,
-    coffee,
-    milk,
-    mix
+    Chocolate,
+    Coffee,
+    Milk,
+    Mix
 }
 
 enum class FoodFlavors {
-    green,
-    pineapple,
-    raisins,
-    guayaba,
-    mole
+    Green,
+    Pineapple,
+    Raisins,
+    Guayaba,
+    Mole
 }
