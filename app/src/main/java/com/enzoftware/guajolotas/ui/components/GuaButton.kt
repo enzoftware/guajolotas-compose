@@ -9,9 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
+import com.enzoftware.guajolotas.ui.utils.ComposableFun
 
 @Composable
-fun GuaButton(content: @Composable() () -> Unit, onClick: () -> Unit) {
+fun GuaButton(content: ComposableFun, onClick: () -> Unit) {
     Button(
         onClick = { onClick.invoke() },
         Modifier.height(64.dp),

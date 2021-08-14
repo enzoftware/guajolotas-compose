@@ -5,6 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import com.enzoftware.guajolotas.ui.utils.ComposableFun
 
 private val DarkColorPalette = darkColors(
     primary = AppColors.primary,
@@ -19,7 +20,7 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun GuajolotasTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun GuajolotasTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: ComposableFun) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
