@@ -25,9 +25,9 @@ import com.google.accompanist.pager.rememberPagerState
 @Composable
 fun HomeScreen() {
     val tabs = listOf(
-        TabItem.Guajolota,
-        TabItem.Drinks,
-        TabItem.Tamales
+        TabItem.GuajolotaTab,
+        TabItem.DrinksTab,
+        TabItem.TamalesTab
     )
     val pagerState = rememberPagerState(pageCount = tabs.size)
     GuajolotasTheme {
@@ -42,6 +42,7 @@ fun HomeScreen() {
             Spacer(modifier = Modifier.height(32.dp))
             SearchBar()
             Spacer(modifier = Modifier.height(32.dp))
+            DrinkFragment()
         }
     }
 }
@@ -64,7 +65,7 @@ fun AppBar() {
 @Composable
 fun HomeHeader() {
     Text(
-        text = "Nada como una Guajolota para empezar el día",
+        text = "Nada como una GuajolotaTab para empezar el día",
         fontSize = 34.sp,
         fontWeight = FontWeight.W700
     )
@@ -75,7 +76,8 @@ fun SearchBar() {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(30.dp))
-            .background(Color(0XFFE7E7E7)),
+            .background(Color(0XFFE7E7E7))
+            .fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
         Row(modifier = Modifier.padding(24.dp)) {

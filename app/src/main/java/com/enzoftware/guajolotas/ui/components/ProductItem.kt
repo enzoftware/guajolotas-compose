@@ -19,7 +19,12 @@ import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 
 @Composable
 fun ProductItem(product: Product) {
-    Card(modifier = Modifier.height(height = 112.dp), shape = RoundedCornerShape(20.dp)) {
+    Card(
+        modifier = Modifier
+            .height(112.dp)
+            .padding(8.dp),
+        shape = RoundedCornerShape(20.dp), backgroundColor = Color.White,
+    ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,

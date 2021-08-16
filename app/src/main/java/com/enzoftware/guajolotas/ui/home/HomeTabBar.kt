@@ -1,29 +1,44 @@
 package com.enzoftware.guajolotas.ui.home
 
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import com.enzoftware.guajolotas.data.FakeProducts
+import com.enzoftware.guajolotas.ui.components.ProductItem
 import com.enzoftware.guajolotas.ui.utils.ComposableFun
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 sealed class TabItem(val title: String, val content: ComposableFun) {
-    object Drinks : TabItem("Bebidas", { DrinkFragment() })
-    object Tamales : TabItem("Tamales", { TamalesFragment() })
-    object Guajolota : TabItem("Guajolotas", { GuajolotasFragment() })
+    object DrinksTab : TabItem("Bebidas", { DrinkFragment() })
+    object TamalesTab : TabItem("TamalesTab", { TamalesFragment() })
+    object GuajolotaTab : TabItem("Guajolotas", { GuajolotasFragment() })
 }
 
 @Composable
 fun DrinkFragment() {
-    Text(text = "Bebidas")
+    LazyColumn {
+        items(FakeProducts.drinks) { drink ->
+            ProductItem(product = drink)
+        }
+    }
 }
 
 @Composable
 fun TamalesFragment() {
-    Text(text = "Tamales")
+    LazyColumn {
+        items(FakeProducts.tamales) { tamal ->
+            ProductItem(product = tamal)
+        }
+    }
 }
 
 @Composable
 fun GuajolotasFragment() {
-    Text(text = "Guajolotas")
+    LazyColumn {
+        items(FakeProducts.guajolotas) { guajolota ->
+            ProductItem(product = guajolota)
+        }
+    }
 }
 
 @ExperimentalPagerApi

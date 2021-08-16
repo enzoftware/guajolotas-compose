@@ -6,7 +6,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.enzoftware.guajolotas.ui.home.HomeScreen
 import com.enzoftware.guajolotas.ui.splash.SplashScreen
+import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalPagerApi
 @Composable
 fun Navigation() {
     val navController = rememberNavController()

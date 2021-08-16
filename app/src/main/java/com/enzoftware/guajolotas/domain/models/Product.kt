@@ -4,16 +4,16 @@ package com.enzoftware.guajolotas.domain.models
 sealed class Product(
     val name: String,
     val price: Double,
-    val quantity: Int
+    var quantity: Int
 ) {
     class Drink(
         name: String,
         price: Double,
-        quantity: Int,
+        quantity: Int = 0,
         val flavor: DrinkFlavors
     ) : Product(name, price, quantity)
 
-    class Food(name: String, price: Double, quantity: Int, val flavor: FoodFlavors) :
+    class Food(name: String, price: Double, quantity: Int = 0, val flavor: FoodFlavors) :
         Product(name, price, quantity)
 
     override fun toString(): String {
