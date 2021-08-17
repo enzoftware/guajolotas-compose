@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enzoftware.guajolotas.data.FakeProducts
 import com.enzoftware.guajolotas.domain.models.Product
+import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 
 @Composable
@@ -41,7 +42,7 @@ fun ProductItem(product: Product) {
             Column {
                 Text(text = product.name, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "$${product.price} PEN", fontSize = 14.sp, color = Color.Blue)
+                Text(text = "$${product.price} PEN", fontSize = 14.sp, color = AppColors.primary)
             }
         }
     }

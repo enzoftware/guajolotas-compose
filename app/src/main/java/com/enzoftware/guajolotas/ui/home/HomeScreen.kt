@@ -42,7 +42,8 @@ fun HomeScreen() {
             Spacer(modifier = Modifier.height(32.dp))
             SearchBar()
             Spacer(modifier = Modifier.height(32.dp))
-            DrinkFragment()
+            TabBar(tabs = tabs, pagerState = pagerState)
+            TabsContent(tabs = tabs, pagerState = pagerState)
         }
     }
 }
@@ -65,7 +66,7 @@ fun AppBar() {
 @Composable
 fun HomeHeader() {
     Text(
-        text = "Nada como una GuajolotaTab para empezar el día",
+        text = "Nada como una Guajolota para empezar el día",
         fontSize = 34.sp,
         fontWeight = FontWeight.W700
     )
@@ -78,20 +79,20 @@ fun SearchBar() {
             .clip(RoundedCornerShape(30.dp))
             .background(Color(0XFFE7E7E7))
             .fillMaxWidth(),
-        contentAlignment = Alignment.Center
     ) {
-        Row(modifier = Modifier.padding(24.dp)) {
+        Row(
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             Icon(
                 painter = painterResource(id = R.drawable.search),
                 contentDescription = "Search icon"
             )
-            Spacer(modifier = Modifier.width(8.dp))
             Text(text = "Sabor de guajolota, bebida...")
         }
     }
 }
-
-
 
 @ExperimentalPagerApi
 @Preview(showBackground = true)
