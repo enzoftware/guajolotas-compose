@@ -1,5 +1,6 @@
 package com.enzoftware.guajolotas.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -8,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.enzoftware.guajolotas.domain.models.FoodFlavors
+import com.enzoftware.guajolotas.data.FakeProducts
 import com.enzoftware.guajolotas.domain.models.Product
-import com.enzoftware.guajolotas.domain.models.Product.Food
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 
 @Composable
@@ -32,7 +33,11 @@ fun ProductItem(product: Product) {
                 .fillMaxSize()
                 .padding(horizontal = 16.dp, vertical = 16.dp),
         ) {
-            GuajolotaLogo(modifier = Modifier.size(80.dp))
+            Image(
+                painter = painterResource(id = product.image),
+                modifier = Modifier.size(80.dp),
+                contentDescription = "Product image"
+            )
             Column {
                 Text(text = product.name, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                 Spacer(modifier = Modifier.height(8.dp))
@@ -46,9 +51,7 @@ fun ProductItem(product: Product) {
 @Preview
 @Composable
 private fun ProductItemPreview() {
-    val product =
-        Food("Veggie tomato mix", price = 25.0, quantity = 0, flavor = FoodFlavors.Pineapple)
     GuajolotasTheme {
-        ProductItem(product = product)
+        ProductItem(product = FakeProducts.mockFood)
     }
 }
