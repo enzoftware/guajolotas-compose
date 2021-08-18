@@ -81,12 +81,13 @@ fun SearchBar(onClick: () -> Unit) {
         modifier = Modifier
             .clip(RoundedCornerShape(30.dp))
             .background(Color(0XFFE7E7E7))
-            .fillMaxWidth()
             .clickable { onClick() },
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .padding(horizontal = 24.dp, vertical = 16.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
