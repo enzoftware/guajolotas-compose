@@ -17,14 +17,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.enzoftware.guajolotas.R
+import com.enzoftware.guajolotas.ui.GoToProductDetail
 import com.enzoftware.guajolotas.ui.components.GuajolotaLogo
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 
+
 @ExperimentalPagerApi
 @Composable
-fun HomeScreen(onClickProduct: GoToDetail, onClickSearch: () -> Unit) {
+fun HomeScreen(onClickProduct: GoToProductDetail, onClickSearch: () -> Unit) {
     val tabs = listOf(
         TabItem.GuajolotaTab(onClickProduct),
         TabItem.DrinksTab(onClickProduct),

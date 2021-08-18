@@ -21,7 +21,7 @@ fun Navigation() {
         composable(route = NavigationScreens.SPLASH) { SplashScreen(navController = navController) }
         composable(route = NavigationScreens.HOME) {
             HomeScreen(
-                onClickProduct = { id ->
+                onClickProduct = { id: String ->
                     navController.navigate(NavigationScreens.DETAIL + "/$id")
                 },
                 onClickSearch = {

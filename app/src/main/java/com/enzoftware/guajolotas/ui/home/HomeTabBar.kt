@@ -10,26 +10,26 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.enzoftware.guajolotas.data.FakeProducts
+import com.enzoftware.guajolotas.ui.ComposableFun
+import com.enzoftware.guajolotas.ui.GoToProductDetail
 import com.enzoftware.guajolotas.ui.components.ProductItem
 import com.enzoftware.guajolotas.ui.theme.AppColors
-import com.enzoftware.guajolotas.ui.utils.ComposableFun
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 
-typealias GoToDetail = (id: String) -> Unit
-
 sealed class TabItem(val title: String, val content: ComposableFun) {
-    data class DrinksTab(val onClick: GoToDetail) : TabItem("Bebidas", { DrinkFragment(onClick) })
+    data class DrinksTab(val onClick: GoToProductDetail) :
+        TabItem("Bebidas", { DrinkFragment(onClick) })
 
-    data class TamalesTab(val onClick: GoToDetail) :
+    data class TamalesTab(val onClick: GoToProductDetail) :
         TabItem("Tamales", { TamalesFragment(onClick) })
 
-    data class GuajolotaTab(val onClick: GoToDetail) :
+    data class GuajolotaTab(val onClick: GoToProductDetail) :
         TabItem("Guajolotas", { GuajolotasFragment(onClick) })
 }
 
 @Composable
-fun DrinkFragment(onClickProduct: GoToDetail) {
+fun DrinkFragment(onClickProduct: GoToProductDetail) {
     LazyColumn {
         items(FakeProducts.drinks) { drink ->
             ProductItem(product = drink, onClick = {
@@ -40,7 +40,7 @@ fun DrinkFragment(onClickProduct: GoToDetail) {
 }
 
 @Composable
-fun TamalesFragment(onClickProduct: GoToDetail) {
+fun TamalesFragment(onClickProduct: GoToProductDetail) {
     LazyColumn {
         items(FakeProducts.tamales) { tamal ->
             ProductItem(product = tamal, onClick = {
@@ -51,7 +51,7 @@ fun TamalesFragment(onClickProduct: GoToDetail) {
 }
 
 @Composable
-fun GuajolotasFragment(onClickProduct: GoToDetail) {
+fun GuajolotasFragment(onClickProduct: GoToProductDetail) {
     LazyColumn {
         items(FakeProducts.guajolotas) { guajolota ->
             ProductItem(product = guajolota, onClick = {
@@ -108,5 +108,6 @@ fun TabsPreview() {
         TabItem.GuajolotaTab(onClick = {})
     )
     val pagerState = rememberPagerState(pageCount = tabs.size)
+
     TabBar(tabs = tabs, pagerState = pagerState)
 }

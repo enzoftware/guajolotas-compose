@@ -1,6 +1,5 @@
 package com.enzoftware.guajolotas.ui.splash
 
-
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
