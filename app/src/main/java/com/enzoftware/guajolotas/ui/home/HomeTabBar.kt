@@ -16,35 +16,47 @@ import com.enzoftware.guajolotas.ui.utils.ComposableFun
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 
+typealias GoToDetail = (id: String) -> Unit
+
 sealed class TabItem(val title: String, val content: ComposableFun) {
-    object DrinksTab : TabItem("Bebidas", { DrinkFragment() })
-    object TamalesTab : TabItem("Tamales", { TamalesFragment() })
-    object GuajolotaTab : TabItem("Guajolotas", { GuajolotasFragment() })
+    data class DrinksTab(val onClick: GoToDetail) : TabItem("Bebidas", { DrinkFragment(onClick) })
+
+    data class TamalesTab(val onClick: GoToDetail) :
+        TabItem("Tamales", { TamalesFragment(onClick) })
+
+    data class GuajolotaTab(val onClick: GoToDetail) :
+        TabItem("Guajolotas", { GuajolotasFragment(onClick) })
 }
 
 @Composable
-fun DrinkFragment() {
+fun DrinkFragment(onClickProduct: GoToDetail) {
     LazyColumn {
         items(FakeProducts.drinks) { drink ->
-            ProductItem(product = drink)
+            ProductItem(product = drink, onClick = {
+                onClickProduct(drink.name)
+            })
         }
     }
 }
 
 @Composable
-fun TamalesFragment() {
+fun TamalesFragment(onClickProduct: GoToDetail) {
     LazyColumn {
         items(FakeProducts.tamales) { tamal ->
-            ProductItem(product = tamal)
+            ProductItem(product = tamal, onClick = {
+                onClickProduct(tamal.name)
+            })
         }
     }
 }
 
 @Composable
-fun GuajolotasFragment() {
+fun GuajolotasFragment(onClickProduct: GoToDetail) {
     LazyColumn {
         items(FakeProducts.guajolotas) { guajolota ->
-            ProductItem(product = guajolota)
+            ProductItem(product = guajolota, onClick = {
+                onClickProduct(guajolota.name)
+            })
         }
     }
 }
@@ -91,9 +103,9 @@ fun TabsContent(tabs: List<TabItem>, pagerState: PagerState) {
 @Composable
 fun TabsPreview() {
     val tabs = listOf(
-        TabItem.DrinksTab,
-        TabItem.TamalesTab,
-        TabItem.GuajolotaTab
+        TabItem.DrinksTab(onClick = {}),
+        TabItem.TamalesTab(onClick = {}),
+        TabItem.GuajolotaTab(onClick = {})
     )
     val pagerState = rememberPagerState(pageCount = tabs.size)
     TabBar(tabs = tabs, pagerState = pagerState)

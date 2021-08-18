@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,13 +20,15 @@ import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(product: Product, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .height(112.dp)
             .padding(8.dp),
         shape = RoundedCornerShape(20.dp), backgroundColor = Color.White,
+        onClick = { onClick() }
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -53,6 +56,6 @@ fun ProductItem(product: Product) {
 @Composable
 private fun ProductItemPreview() {
     GuajolotasTheme {
-        ProductItem(product = FakeProducts.mockFood)
+        ProductItem(product = FakeProducts.mockFood, onClick = {})
     }
 }

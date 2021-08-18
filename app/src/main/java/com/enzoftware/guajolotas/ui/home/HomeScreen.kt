@@ -1,6 +1,7 @@
 package com.enzoftware.guajolotas.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -23,11 +24,11 @@ import com.google.accompanist.pager.rememberPagerState
 
 @ExperimentalPagerApi
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onClickProduct: GoToDetail, onClickSearch: () -> Unit) {
     val tabs = listOf(
-        TabItem.GuajolotaTab,
-        TabItem.DrinksTab,
-        TabItem.TamalesTab
+        TabItem.GuajolotaTab(onClickProduct),
+        TabItem.DrinksTab(onClickProduct),
+        TabItem.TamalesTab(onClickProduct)
     )
     val pagerState = rememberPagerState(pageCount = tabs.size)
     GuajolotasTheme {
@@ -40,7 +41,7 @@ fun HomeScreen() {
             Spacer(modifier = Modifier.height(32.dp))
             HomeHeader()
             Spacer(modifier = Modifier.height(32.dp))
-            SearchBar()
+            SearchBar(onClickSearch)
             Spacer(modifier = Modifier.height(32.dp))
             TabBar(tabs = tabs, pagerState = pagerState)
             TabsContent(tabs = tabs, pagerState = pagerState)
@@ -73,12 +74,13 @@ fun HomeHeader() {
 }
 
 @Composable
-fun SearchBar() {
+fun SearchBar(onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(30.dp))
             .background(Color(0XFFE7E7E7))
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onClick() },
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
@@ -99,6 +101,6 @@ fun SearchBar() {
 @Composable
 fun HomePreview() {
     GuajolotasTheme {
-        HomeScreen()
+        HomeScreen(onClickProduct = {}, onClickSearch = {})
     }
 }
