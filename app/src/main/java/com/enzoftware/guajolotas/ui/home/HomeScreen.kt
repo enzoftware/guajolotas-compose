@@ -52,7 +52,7 @@ fun HomeScreen(onClickProduct: GoToProductDetail, onClickSearch: () -> Unit) {
 }
 
 @Composable
-fun AppBar() {
+private fun AppBar() {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth(),

@@ -29,14 +29,14 @@ fun Navigation() {
                 },
             )
         }
-        composable(route = NavigationScreens.SEARCH) { SearchScreen(navController = navController) }
+        composable(route = NavigationScreens.SEARCH) { SearchScreen() }
         composable(
             route = NavigationScreens.DETAIL + "/{$PRODUCT_ID}",
             arguments = listOf(navArgument(PRODUCT_ID) {
                 type = NavType.StringType
             })
         ) {
-            DetailScreen(navController = navController)
+            DetailScreen(onBackPressed = { navController.popBackStack() })
         }
     }
 }
