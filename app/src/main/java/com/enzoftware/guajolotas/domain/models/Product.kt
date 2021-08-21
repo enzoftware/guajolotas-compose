@@ -27,6 +27,8 @@ sealed class Product(
     ) :
         Product(name, price, quantity, image)
 
+    val formattedPrice: String = "$${price} PEN"
+
     override fun toString(): String {
         return "Product $name, Price: $price, Quantity: $quantity"
     }
