@@ -45,7 +45,7 @@ fun ProductItem(product: Product, onClick: () -> Unit) {
             Column {
                 Text(text = product.name, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "$${product.price} PEN", fontSize = 14.sp, color = AppColors.primary)
+                Text(text = product.formattedPrice, fontSize = 14.sp, color = AppColors.primary)
             }
         }
     }

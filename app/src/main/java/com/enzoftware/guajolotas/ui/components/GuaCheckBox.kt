@@ -49,7 +49,7 @@ fun GuaCheckBox(product: Product) {
             Spacer(modifier = Modifier.height(4.dp))
             // TODO: Handle currency inside the product model
             Text(
-                text = "+ $${product.price} PEN",
+                text = "+ ${product.formattedPrice}",
                 fontSize = 12.sp,
                 fontWeight = FontWeight.W600,
                 color = AppColors.primary
