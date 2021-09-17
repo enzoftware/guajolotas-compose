@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ fun SearchScreen() {
     Scaffold() {
         Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 40.dp)) {
             SearchTopBar()
+            SearchInitialScreen()
         }
     }
 }
@@ -35,7 +37,7 @@ fun SearchTopBar() {
         TextField(
             value = text,
             onValueChange = { text = it },
-            label = { Text("Tamal, Cafe, ...") },
+            label = { Text("Busca el producto") },
             shape = RoundedCornerShape(30.dp),
             trailingIcon = { Icon(Icons.Filled.Search, "Search icon") },
             colors = TextFieldDefaults.textFieldColors(
@@ -46,7 +48,7 @@ fun SearchTopBar() {
             modifier = Modifier.weight(12f)
         )
         Text(
-            text = "Cancelar",
+            text = stringResource(R.string.cancel),
             fontSize = 16.sp,
             fontWeight = FontWeight.W500,
             modifier = Modifier
@@ -58,7 +60,13 @@ fun SearchTopBar() {
 
 @Composable
 fun SearchInitialScreen() {
-    Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Image(
             painter = painterResource(id = R.drawable.feather_search),
             contentDescription = "Search icon",

@@ -7,6 +7,9 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -23,14 +26,19 @@ import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun DetailScreen(onBackPressed: () -> Unit) {
+    val products = FakeProducts.tamales
+    val pagerState = rememberPagerState(pageCount = products.size, initialOffscreenLimit = 2)
+
     Scaffold {
         Column(Modifier.padding(24.dp)) {
             DetailAppBar(onBackPressed)
-            DetailBody(products = FakeProducts.tamales)
+            DetailBody(products, pagerState)
         }
     }
 }
@@ -57,14 +65,29 @@ private fun DetailAppBar(onBackPressed: () -> Unit) {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun DetailBody(products: List<Product>) {
-    Column {
-        val pagerState = rememberPagerState(pageCount = products.size, initialOffscreenLimit = 2)
-        val product = products[pagerState.currentPage]
-        HorizontalPager(state = pagerState) {
+fun DetailBody(products: List<Product>, pagerState: PagerState) {
+    val coroutineScope = rememberCoroutineScope()
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        val currentProduct = products[pagerState.currentPage]
+        val currentQuantity = remember {
+            mutableStateOf(currentProduct.quantity)
+        }
+
+        HorizontalPager(
+            state = pagerState, modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            itemSpacing = 8.dp
+        ) { index ->
+            val product = products[index]
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.padding(start = 24.dp, top = 16.dp, end = 24.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
                     painter = painterResource(id = product.image),
@@ -80,14 +103,20 @@ fun DetailBody(products: List<Product>) {
                     fontWeight = FontWeight.W700,
                     color = AppColors.primary
                 )
-                Spacer(modifier = Modifier.height(16.dp))
-                ProductCounter(
-                    incrementProductCount = {},
-                    decreaseProductCount = {},
-                    count = product.quantity
-                )
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        ProductCounter(
+            decreaseProductCount = {
+                currentProduct.decreaseQuantity()
+                currentQuantity.value -= 1
+            },
+            incrementProductCount = {
+                currentProduct.increaseQuantity()
+                currentQuantity.value += 1
+            },
+            count = products[pagerState.currentPage].quantity
+        )
         Text(
             text = "Sabor",
             fontSize = 20.sp,
@@ -97,6 +126,11 @@ fun DetailBody(products: List<Product>) {
                 .fillMaxWidth()
                 .padding(top = 40.dp, bottom = 24.dp)
         )
+
+        //coroutineScope.launch {
+        //                        pagerState.animateScrollToPage(2)
+        //                    }
+        //
     }
 }
 

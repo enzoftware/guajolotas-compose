@@ -29,6 +29,14 @@ sealed class Product(
 
     val formattedPrice: String = "$${price} PEN"
 
+    fun increaseQuantity() {
+        this.quantity += 1
+    }
+
+    fun decreaseQuantity() {
+        this.quantity -= 1
+    }
+
     override fun toString(): String {
         return "Product $name, Price: $price, Quantity: $quantity"
     }
