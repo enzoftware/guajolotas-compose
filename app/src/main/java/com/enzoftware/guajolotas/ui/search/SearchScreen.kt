@@ -45,6 +45,7 @@ fun SearchTopBar() {
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
+            singleLine = true,
             modifier = Modifier.weight(12f)
         )
         Text(

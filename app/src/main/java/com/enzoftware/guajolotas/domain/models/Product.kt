@@ -29,8 +29,7 @@ sealed class Product(
         image: Int,
         flavorImage: Int = R.drawable.shopping_cart,
         val flavor: FoodFlavors
-    ) :
-        Product(name, price, quantity, image, flavorImage)
+    ) : Product(name, price, quantity, image, flavorImage)
 
     val formattedPrice: String = "$${price} PEN"
 

@@ -33,9 +33,12 @@ sealed class TabItem(val title: String, val content: ComposableFun) {
 fun DrinkFragment(onClickProduct: GoToProductDetail) {
     LazyColumn {
         items(FakeProducts.drinks) { drink ->
-            ProductItem(product = drink, onClick = {
-                onClickProduct(drink.name)
-            })
+            ProductItem(
+                product = drink,
+                onClick = {
+                    onClickProduct(drink.name)
+                },
+            )
         }
     }
 }
@@ -55,9 +58,12 @@ fun TamalesFragment(onClickProduct: GoToProductDetail) {
 fun GuajolotasFragment(onClickProduct: GoToProductDetail) {
     LazyColumn {
         items(FakeProducts.guajolotas) { guajolota ->
-            ProductItem(product = guajolota, onClick = {
-                onClickProduct(guajolota.name)
-            })
+            ProductItem(
+                product = guajolota,
+                onClick = {
+                    onClickProduct(guajolota.name)
+                },
+            )
         }
     }
 }
@@ -77,7 +83,7 @@ fun TabBar(tabs: List<TabItem>, pagerState: PagerState) {
         }) {
         tabs.forEachIndexed { index, tab ->
             Tab(
-                text = { Text(tab.title, fontSize = 17.sp) },
+                text = { Text(tab.title, fontSize = 16.sp) },
                 selected = pagerState.currentPage == index,
                 onClick = {
                     scope.launch {

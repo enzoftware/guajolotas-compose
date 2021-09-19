@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.R
 import com.enzoftware.guajolotas.ui.GoToProductDetail
 import com.enzoftware.guajolotas.ui.components.GuajolotaLogo
@@ -27,12 +27,11 @@ import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 
-
 @ExperimentalPagerApi
 @Composable
 fun HomeScreen(onClickProduct: GoToProductDetail, onClickSearch: () -> Unit) {
 
-    val viewModel = viewModel(HomeViewModel::class.java)
+    val viewModel = hiltViewModel<HomeViewModel>()
 
     val state by viewModel.state.collectAsState()
 

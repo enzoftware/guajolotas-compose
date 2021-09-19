@@ -10,6 +10,7 @@ import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 class MainActivity : ComponentActivity() {
