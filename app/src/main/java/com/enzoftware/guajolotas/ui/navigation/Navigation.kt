@@ -1,11 +1,12 @@
 package com.enzoftware.guajolotas.ui.navigation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.enzoftware.guajolotas.ui.detail.DetailScreen
 import com.enzoftware.guajolotas.ui.home.HomeScreen
 import com.enzoftware.guajolotas.ui.navigation.NavigationScreens.PRODUCT_ID
@@ -13,6 +14,7 @@ import com.enzoftware.guajolotas.ui.search.SearchScreen
 import com.enzoftware.guajolotas.ui.splash.SplashScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Composable
 fun Navigation() {

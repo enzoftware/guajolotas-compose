@@ -1,6 +1,7 @@
 package com.enzoftware.guajolotas.domain.models
 
 import androidx.annotation.DrawableRes
+import com.enzoftware.guajolotas.R
 
 
 sealed class Product(
@@ -8,24 +9,28 @@ sealed class Product(
     val price: Double,
     var quantity: Int,
     @DrawableRes
-    val image: Int
+    val image: Int,
+    @DrawableRes
+    val flavorImage: Int
 ) {
     class Drink(
         name: String,
         price: Double,
         quantity: Int = 0,
         image: Int,
+        flavorImage: Int = R.drawable.shopping_cart,
         val flavor: DrinkFlavors
-    ) : Product(name, price, quantity, image)
+    ) : Product(name, price, quantity, image, flavorImage)
 
     class Food(
         name: String,
         price: Double,
         quantity: Int = 0,
         image: Int,
+        flavorImage: Int = R.drawable.shopping_cart,
         val flavor: FoodFlavors
     ) :
-        Product(name, price, quantity, image)
+        Product(name, price, quantity, image, flavorImage)
 
     val formattedPrice: String = "$${price} PEN"
 

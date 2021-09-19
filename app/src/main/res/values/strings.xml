@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Guajolotas</string>
     <string name="cancel">Cancelar</string>
+    <string name="tamales">Tamales</string>
+    <string name="drinks">Bebidas</string>
+    <string name="guajolotas">Guajolotas</string>
+    <string name="flavor">Sabor</string>
 </resources>

@@ -18,14 +18,15 @@ import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 
 sealed class TabItem(val title: String, val content: ComposableFun) {
-    data class DrinksTab(val onClick: GoToProductDetail) :
-        TabItem("Bebidas", { DrinkFragment(onClick) })
 
-    data class TamalesTab(val onClick: GoToProductDetail) :
-        TabItem("Tamales", { TamalesFragment(onClick) })
+    data class DrinksTab(val tabTitle: String, val onClick: GoToProductDetail) :
+        TabItem(tabTitle, { DrinkFragment(onClick) })
 
-    data class GuajolotaTab(val onClick: GoToProductDetail) :
-        TabItem("Guajolotas", { GuajolotasFragment(onClick) })
+    data class TamalesTab(val tabTitle: String, val onClick: GoToProductDetail) :
+        TabItem(tabTitle, { TamalesFragment(onClick) })
+
+    data class GuajolotaTab(val tabTitle: String, val onClick: GoToProductDetail) :
+        TabItem(tabTitle, { GuajolotasFragment(onClick) })
 }
 
 @Composable
@@ -103,9 +104,9 @@ fun TabsContent(tabs: List<TabItem>, pagerState: PagerState) {
 @Composable
 fun TabsPreview() {
     val tabs = listOf(
-        TabItem.DrinksTab(onClick = {}),
-        TabItem.TamalesTab(onClick = {}),
-        TabItem.GuajolotaTab(onClick = {})
+        TabItem.DrinksTab(onClick = {}, tabTitle = ""),
+        TabItem.TamalesTab(onClick = {}, tabTitle = ""),
+        TabItem.GuajolotaTab(onClick = {}, tabTitle = "")
     )
     val pagerState = rememberPagerState(pageCount = tabs.size)
 

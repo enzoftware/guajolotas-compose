@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,9 +37,9 @@ fun HomeScreen(onClickProduct: GoToProductDetail, onClickSearch: () -> Unit) {
     val state by viewModel.state.collectAsState()
 
     val tabs = listOf(
-        TabItem.GuajolotaTab(onClickProduct),
-        TabItem.DrinksTab(onClickProduct),
-        TabItem.TamalesTab(onClickProduct)
+        TabItem.GuajolotaTab(stringResource(R.string.guajolotas), onClickProduct),
+        TabItem.DrinksTab(stringResource(R.string.drinks), onClickProduct),
+        TabItem.TamalesTab(stringResource(R.string.tamales), onClickProduct)
     )
 
     val pagerState = rememberPagerState(pageCount = tabs.size)

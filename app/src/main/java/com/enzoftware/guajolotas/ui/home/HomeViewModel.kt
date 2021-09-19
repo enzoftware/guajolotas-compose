@@ -5,7 +5,6 @@ import com.enzoftware.guajolotas.domain.models.Product
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-
 class HomeViewModel : ViewModel() {
 
     private val _state = MutableStateFlow(HomeViewState())

@@ -1,8 +1,13 @@
 package com.enzoftware.guajolotas.ui.detail
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -13,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,27 +28,33 @@ import com.enzoftware.guajolotas.R
 import com.enzoftware.guajolotas.data.FakeProducts
 import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.ui.components.ProductCounter
+import com.enzoftware.guajolotas.ui.components.ProductFlavor
 import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+
+@ExperimentalFoundationApi
+@ExperimentalPagerApi
 @Composable
 fun DetailScreen(onBackPressed: () -> Unit) {
     val products = FakeProducts.tamales
     val pagerState = rememberPagerState(pageCount = products.size, initialOffscreenLimit = 2)
+    val scrolState = rememberScrollState()
 
     Scaffold {
-        Column(Modifier.padding(24.dp)) {
+        Column(
+            Modifier.padding(24.dp)
+        ) {
             DetailAppBar(onBackPressed)
-            DetailBody(products, pagerState)
+            DetailBody(products = products, pagerState = pagerState)
         }
     }
 }
-
 
 @Composable
 private fun DetailAppBar(onBackPressed: () -> Unit) {
@@ -63,10 +75,16 @@ private fun DetailAppBar(onBackPressed: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@ExperimentalFoundationApi
+@ExperimentalPagerApi
 @Composable
-fun DetailBody(products: List<Product>, pagerState: PagerState) {
+fun DetailBody(
+    products: List<Product>,
+    complements: List<Product> = emptyList(),
+    pagerState: PagerState
+) {
     val coroutineScope = rememberCoroutineScope()
+
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -118,7 +136,7 @@ fun DetailBody(products: List<Product>, pagerState: PagerState) {
             count = products[pagerState.currentPage].quantity
         )
         Text(
-            text = "Sabor",
+            text = stringResource(R.string.flavor),
             fontSize = 20.sp,
             fontWeight = FontWeight.W600,
             textAlign = TextAlign.Start,
@@ -126,15 +144,31 @@ fun DetailBody(products: List<Product>, pagerState: PagerState) {
                 .fillMaxWidth()
                 .padding(top = 40.dp, bottom = 24.dp)
         )
-
-        //coroutineScope.launch {
-        //                        pagerState.animateScrollToPage(2)
-        //                    }
-        //
+        LazyVerticalGrid(
+            cells = GridCells.Fixed(3)
+        ) {
+            items(products) { product ->
+                ProductFlavor(
+                    image = product.flavorImage,
+                    onClick = {
+                        val index = products.indexOf(product)
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    },
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(32.dp))
+        Text(text = "Guajolocombo")
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "Selecciona la bebida que más te guste y disfruta de tu desayuno.")
     }
 }
 
 
+@ExperimentalFoundationApi
+@ExperimentalPagerApi
 @Preview
 @Composable
 fun DetailScreenPreview() {
