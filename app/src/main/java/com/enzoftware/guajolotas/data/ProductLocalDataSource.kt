@@ -6,23 +6,17 @@ import kotlinx.coroutines.delay
 
 class ProductLocalDataSource {
 
-    suspend fun fetchDrinks(): ResultState<List<Product>> {
+    suspend fun fetchProducts(): ResultState<List<Product>> {
         delay(2000)
-        // Here replace with a real call from a data source
-        val response = FakeProducts.drinks
-        // Here you can validate if the response is Success or Error
+        val response = FakeProducts.allProducts
         return ResultState.Success(response)
     }
 
-    suspend fun fetchTamales(): ResultState<List<Product>> {
+
+    suspend fun searchProduct(name: String): ResultState<List<Product>> {
         delay(2000)
-        val response = FakeProducts.tamales
+        val response = FakeProducts.allProducts.filter { it.name.contains(name) }
         return ResultState.Success(response)
     }
 
-    suspend fun fetchSandwiches(): ResultState<List<Product>> {
-        delay(2000)
-        val response = FakeProducts.guajolotas
-        return ResultState.Success(response)
-    }
 }

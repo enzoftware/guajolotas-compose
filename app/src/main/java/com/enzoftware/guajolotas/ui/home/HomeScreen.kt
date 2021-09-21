@@ -104,7 +104,7 @@ fun SearchBar(onClick: () -> Unit) {
                 painter = painterResource(id = R.drawable.search),
                 contentDescription = "Search icon"
             )
-            Text(text = "Sabor de guajolota, bebida...")
+            Text(text = "Sabor de Guajolota, bebida...")
         }
     }
 }

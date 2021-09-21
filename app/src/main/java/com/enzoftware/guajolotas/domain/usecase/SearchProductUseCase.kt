@@ -1,4 +1,5 @@
 package com.enzoftware.guajolotas.domain.usecase
 
-class SearchProductUseCase {
-}
+import com.enzoftware.guajolotas.domain.repository.ProductRepository
+
+class SearchProductUseCase(private val productRepository: ProductRepository)

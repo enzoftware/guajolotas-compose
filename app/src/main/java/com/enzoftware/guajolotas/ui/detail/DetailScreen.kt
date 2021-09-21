@@ -5,9 +5,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -44,14 +44,19 @@ import kotlinx.coroutines.launch
 fun DetailScreen(onBackPressed: () -> Unit) {
     val products = FakeProducts.tamales
     val pagerState = rememberPagerState(pageCount = products.size, initialOffscreenLimit = 2)
-    val scrolState = rememberScrollState()
 
     Scaffold {
-        Column(
-            Modifier.padding(24.dp)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp)
         ) {
-            DetailAppBar(onBackPressed)
-            DetailBody(products = products, pagerState = pagerState)
+            item {
+                DetailAppBar(onBackPressed)
+            }
+            item {
+                DetailBody(products = products, pagerState = pagerState)
+            }
         }
     }
 }
@@ -84,7 +89,6 @@ fun DetailBody(
     pagerState: PagerState
 ) {
     val coroutineScope = rememberCoroutineScope()
-
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -135,6 +139,7 @@ fun DetailBody(
             },
             count = products[pagerState.currentPage].quantity
         )
+
         Text(
             text = stringResource(R.string.flavor),
             fontSize = 20.sp,
@@ -144,19 +149,25 @@ fun DetailBody(
                 .fillMaxWidth()
                 .padding(top = 40.dp, bottom = 24.dp)
         )
-        LazyVerticalGrid(
-            cells = GridCells.Fixed(3)
+        Box(
+            modifier = Modifier
+                .height(240.dp)
+                .fillMaxWidth()
         ) {
-            items(products) { product ->
-                ProductFlavor(
-                    image = product.flavorImage,
-                    onClick = {
-                        val index = products.indexOf(product)
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(index)
-                        }
-                    },
-                )
+            LazyVerticalGrid(
+                cells = GridCells.Fixed(3)
+            ) {
+                items(products) { product ->
+                    ProductFlavor(
+                        image = product.flavorImage,
+                        onClick = {
+                            val index = products.indexOf(product)
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        },
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.height(32.dp))

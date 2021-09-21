@@ -10,3 +10,12 @@ sealed class ResultState<out T : Any> {
     }
 
 }
+
+
+fun <T : Any> ResultState<T>.error(message: String? = null) = (this as? ResultState.Error)?.exception
+        ?: Exception(message ?: "unknown error")
+
+fun <T : Any> ResultState<T>.error(exception: Exception) = (this as? ResultState.Error)?.exception
+        ?: exception
+
+fun <T : Any> ResultState<T>.success() = (this as? ResultState.Success)?.data

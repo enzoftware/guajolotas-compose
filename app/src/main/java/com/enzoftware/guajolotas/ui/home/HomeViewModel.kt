@@ -26,11 +26,35 @@ class HomeViewModel @Inject constructor(
     val state: StateFlow<HomeViewState>
         get() = _state
 
-    fun getDrinks(){
+    fun getDrinks() {
         viewModelScope.launch(coroutineDispatchers.io) {
             val result = fetchProductsUseCase.getDrinkProducts()
-            withContext(coroutineDispatchers.main){
-                when(result){
+            withContext(coroutineDispatchers.main) {
+                when (result) {
+                    is ResultState.Success -> getDrinksSuccess()
+                    is ResultState.Error -> getDrinksError()
+                }
+            }
+        }
+    }
+
+    fun getTamales() {
+        viewModelScope.launch(coroutineDispatchers.io) {
+            val result = fetchProductsUseCase.getTamalesProducts()
+            withContext(coroutineDispatchers.main) {
+                when (result) {
+                    is ResultState.Success -> getDrinksSuccess()
+                    is ResultState.Error -> getDrinksError()
+                }
+            }
+        }
+    }
+
+    fun getGuajolotas() {
+        viewModelScope.launch(coroutineDispatchers.io) {
+            val result = fetchProductsUseCase.getGuajolotasProducts()
+            withContext(coroutineDispatchers.main) {
+                when (result) {
                     is ResultState.Success -> getDrinksSuccess()
                     is ResultState.Error -> getDrinksError()
                 }
