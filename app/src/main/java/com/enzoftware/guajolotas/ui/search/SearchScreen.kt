@@ -2,6 +2,8 @@ package com.enzoftware.guajolotas.ui.search
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,27 +18,71 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.R
+import com.enzoftware.guajolotas.domain.models.Product
+import com.enzoftware.guajolotas.ui.components.ProductItem
 import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 
 @Composable
-fun SearchScreen() {
-    Scaffold() {
-        Column(modifier = Modifier.padding(horizontal = 24.dp, vertical = 40.dp)) {
-            SearchTopBar()
-            SearchInitialScreen()
+fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
+
+    val state by viewModel.state.collectAsState()
+
+    Scaffold {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 24.dp, vertical = 40.dp)
+                .fillMaxSize()
+        ) {
+            SearchTopBar(viewModel)
+            Spacer(modifier = Modifier.height(16.dp))
+            when {
+                state.loading -> LoadingScreen()
+                state.products != null -> SearchProductsResult(products = state.products!!)
+                !state.loading && state.products == null && state.exception == null -> SearchInitialScreen()
+            }
         }
     }
 }
 
 @Composable
-fun SearchTopBar() {
+fun LoadingScreen() {
+    Column(
+        Modifier.fillMaxSize(),
+        Arrangement.Center,
+        Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun SearchProductsResult(products: List<Product>) {
+    if (products.isNotEmpty()) {
+        LazyColumn {
+            items(products) { product ->
+                ProductItem(product = product) {
+
+                }
+            }
+        }
+    } else {
+        SearchEmptyScreen()
+    }
+}
+
+@Composable
+fun SearchTopBar(viewModel: SearchViewModel) {
     var text by remember { mutableStateOf("") }
     Row(verticalAlignment = Alignment.CenterVertically) {
         TextField(
             value = text,
-            onValueChange = { text = it },
+            onValueChange = {
+                text = it
+                viewModel.searchProduct(text)
+            },
             label = { Text("Busca el producto") },
             shape = RoundedCornerShape(30.dp),
             trailingIcon = { Icon(Icons.Filled.Search, "Search icon") },
@@ -82,16 +128,24 @@ fun SearchInitialScreen() {
 
 @Composable
 fun SearchEmptyScreen() {
-    Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Image(
             painter = painterResource(id = R.drawable.feather_search),
-            contentDescription = "Search icon",
+            contentDescription = stringResource(R.string.search_icon_description),
             modifier = Modifier
                 .width(100.dp)
                 .height(120.dp)
         )
         Spacer(modifier = Modifier.height(24.dp))
-        Text(text = "No hay resultados", fontSize = 16.sp, fontWeight = FontWeight.W600)
+        Text(
+            text = stringResource(R.string.empty_results),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.W600
+        )
     }
 }
 

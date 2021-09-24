@@ -14,7 +14,7 @@ class ProductLocalDataSource {
 
 
     suspend fun searchProduct(name: String): ResultState<List<Product>> {
-        delay(2000)
+        delay(1500)
         val response = FakeProducts.allProducts.filter { it.name.contains(name) }
         return ResultState.Success(response)
     }

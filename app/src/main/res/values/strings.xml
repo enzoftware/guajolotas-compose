@@ -5,4 +5,6 @@
     <string name="drinks">Bebidas</string>
     <string name="guajolotas">Guajolotas</string>
     <string name="flavor">Sabor</string>
+    <string name="empty_results">No hay resultados</string>
+    <string name="search_icon_description">Search icon</string>
 </resources>

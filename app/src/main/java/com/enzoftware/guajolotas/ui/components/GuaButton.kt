@@ -10,6 +10,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.enzoftware.guajolotas.ui.ComposableFun
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 
 @Composable
 fun GuaButton(content: ComposableFun, onClick: () -> Unit) {
@@ -27,7 +30,11 @@ fun GuaButton(content: ComposableFun, onClick: () -> Unit) {
 fun GuaButtonPreview() {
     GuajolotasTheme {
         GuaButton(onClick = {}, content = {
-            Text(text = "Agregar 1 al carrito")
+            Row(Modifier) {
+                Text(text = "Agregar 1 al carrito")
+                Spacer(modifier = Modifier.width(48.dp))
+                Text(text = "$12.00")
+            }
         })
     }
 }

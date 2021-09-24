@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.sp
 import com.enzoftware.guajolotas.R
 import com.enzoftware.guajolotas.data.FakeProducts
 import com.enzoftware.guajolotas.domain.models.Product
+import com.enzoftware.guajolotas.ui.components.GuaButton
+import com.enzoftware.guajolotas.ui.components.GuaCheckBox
 import com.enzoftware.guajolotas.ui.components.ProductCounter
 import com.enzoftware.guajolotas.ui.components.ProductFlavor
 import com.enzoftware.guajolotas.ui.theme.AppColors
@@ -43,6 +45,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun DetailScreen(onBackPressed: () -> Unit) {
     val products = FakeProducts.tamales
+    val complements = FakeProducts.drinks
     val pagerState = rememberPagerState(pageCount = products.size, initialOffscreenLimit = 2)
 
     Scaffold {
@@ -55,7 +58,7 @@ fun DetailScreen(onBackPressed: () -> Unit) {
                 DetailAppBar(onBackPressed)
             }
             item {
-                DetailBody(products = products, pagerState = pagerState)
+                DetailBody(products = products, complements = complements, pagerState = pagerState)
             }
         }
     }
@@ -142,7 +145,7 @@ fun DetailBody(
 
         Text(
             text = stringResource(R.string.flavor),
-            fontSize = 20.sp,
+            fontSize = 24.sp,
             fontWeight = FontWeight.W600,
             textAlign = TextAlign.Start,
             modifier = Modifier
@@ -170,10 +173,44 @@ fun DetailBody(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(text = "Guajolocombo")
-        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Guajolocombo",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.W600,
+            textAlign = TextAlign.Start,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp, bottom = 8.dp)
+        )
         Text(text = "Selecciona la bebida que más te guste y disfruta de tu desayuno.")
+        Spacer(modifier = Modifier.height(8.dp))
+        Box(
+            modifier = Modifier
+                .height(320.dp)
+                .fillMaxWidth()
+        ) {
+            LazyVerticalGrid(
+                cells = GridCells.Fixed(2)
+            ) {
+                items(complements) { complement ->
+                    GuaCheckBox(
+                        product = complement,
+                        onClick = {
+
+                        },
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        GuaButton(
+            onClick = {},
+            content = {
+                Row(Modifier) {
+                    Text(text = "Agregar 1 al carrito")
+                }
+            },
+        )
     }
 }
 
