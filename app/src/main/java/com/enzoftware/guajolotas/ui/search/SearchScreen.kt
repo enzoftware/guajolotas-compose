@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.R
 import com.enzoftware.guajolotas.domain.models.Product
+import com.enzoftware.guajolotas.ui.components.LoadingScreen
 import com.enzoftware.guajolotas.ui.components.ProductItem
 import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
@@ -44,17 +45,6 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
                 !state.loading && state.products == null && state.exception == null -> SearchInitialScreen()
             }
         }
-    }
-}
-
-@Composable
-fun LoadingScreen() {
-    Column(
-        Modifier.fillMaxSize(),
-        Arrangement.Center,
-        Alignment.CenterHorizontally
-    ) {
-        CircularProgressIndicator()
     }
 }
 
@@ -83,9 +73,9 @@ fun SearchTopBar(viewModel: SearchViewModel) {
                 text = it
                 viewModel.searchProduct(text)
             },
-            label = { Text("Busca el producto") },
+            label = { Text(stringResource(R.string.search_product)) },
             shape = RoundedCornerShape(30.dp),
-            trailingIcon = { Icon(Icons.Filled.Search, "Search icon") },
+            trailingIcon = { Icon(Icons.Filled.Search, stringResource(R.string.search_icon)) },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = AppColors.textFieldBackground,
                 focusedIndicatorColor = Color.Transparent,

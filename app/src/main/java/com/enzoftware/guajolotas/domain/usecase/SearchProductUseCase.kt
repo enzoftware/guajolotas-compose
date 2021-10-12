@@ -5,5 +5,5 @@ import javax.inject.Inject
 
 class SearchProductUseCase @Inject constructor(private val productRepository: ProductRepository) {
 
-    suspend fun invoke(query: String) = productRepository.searchProduct(query)
+    suspend fun searchProduct(query: String) = productRepository.searchProduct(query)
 }

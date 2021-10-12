@@ -19,6 +19,14 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"]
+            }
+        }
     }
 
     buildTypes {
@@ -31,6 +39,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
         useIR = true
@@ -63,6 +72,12 @@ dependencies {
     // Navigation
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha09"
     implementation "com.google.accompanist:accompanist-navigation-animation:0.16.0"
+
+    // Room
+    def room_version = "2.3.0"
+
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     // Accompanist
     implementation "com.google.accompanist:accompanist-pager:0.16.0" // Pager

@@ -7,4 +7,6 @@
     <string name="flavor">Sabor</string>
     <string name="empty_results">No hay resultados</string>
     <string name="search_icon_description">Search icon</string>
+    <string name="search_product">Busca el producto</string>
+    <string name="search_icon">Search icon</string>
 </resources>

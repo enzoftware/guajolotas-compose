@@ -20,60 +20,69 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeViewState())
-
-    private val refreshing = MutableStateFlow(false)
-
     val state: StateFlow<HomeViewState>
         get() = _state
 
     fun getDrinks() {
+        emitHomeViewState(loading = true)
         viewModelScope.launch(coroutineDispatchers.io) {
             val result = fetchProductsUseCase.getDrinkProducts()
             withContext(coroutineDispatchers.main) {
                 when (result) {
-                    is ResultState.Success -> getDrinksSuccess()
-                    is ResultState.Error -> getDrinksError()
+                    is ResultState.Success -> getProductsSuccess(result.data)
+                    is ResultState.Error -> getProductsError(result.exception)
                 }
             }
         }
     }
 
     fun getTamales() {
+        emitHomeViewState(loading = true)
         viewModelScope.launch(coroutineDispatchers.io) {
             val result = fetchProductsUseCase.getTamalesProducts()
             withContext(coroutineDispatchers.main) {
                 when (result) {
-                    is ResultState.Success -> getDrinksSuccess()
-                    is ResultState.Error -> getDrinksError()
+                    is ResultState.Success -> getProductsSuccess(result.data)
+                    is ResultState.Error -> getProductsError(result.exception)
                 }
             }
         }
     }
 
     fun getGuajolotas() {
+        emitHomeViewState(loading = true)
         viewModelScope.launch(coroutineDispatchers.io) {
             val result = fetchProductsUseCase.getGuajolotasProducts()
             withContext(coroutineDispatchers.main) {
                 when (result) {
-                    is ResultState.Success -> getDrinksSuccess()
-                    is ResultState.Error -> getDrinksError()
+                    is ResultState.Success -> getProductsSuccess(result.data)
+                    is ResultState.Error -> getProductsError(result.exception)
                 }
             }
         }
     }
 
-    private fun getDrinksError() {
-        TODO("Not yet implemented")
+    private fun getProductsError(exception: Exception) {
+        emitHomeViewState(exception = exception)
     }
 
-    private fun getDrinksSuccess() {
-        TODO("Not yet implemented")
+    private fun getProductsSuccess(products: List<Product>) {
+        emitHomeViewState(products = products)
+    }
+
+    private fun emitHomeViewState(
+        products: List<Product>? = null,
+        loading: Boolean = false,
+        exception: Exception? = null,
+    ) {
+        val uiModel = HomeViewState(products, loading, exception.toString())
+        _state.value = uiModel
     }
 
 }
 
 data class HomeViewState(
-    val products: List<Product> = emptyList(),
-    val selectedProductIndex: Int = 0,
+    val products: List<Product>? = null,
+    val loading: Boolean = false,
     val error: String? = null
 )

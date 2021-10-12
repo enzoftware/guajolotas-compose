@@ -26,7 +26,7 @@ class SearchViewModel @Inject constructor(
     fun searchProduct(query: String) {
         emitSearchUiModel(loading = true)
         viewModelScope.launch(coroutineDispatchers.io) {
-            val result = searchProductUseCase.invoke(query)
+            val result = searchProductUseCase.searchProduct(query)
             withContext(coroutineDispatchers.main) {
                 when (result) {
                     is ResultState.Success -> searchProductSuccess(result.data)

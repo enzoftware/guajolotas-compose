@@ -43,7 +43,7 @@ import kotlinx.coroutines.launch
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Composable
-fun DetailScreen(onBackPressed: () -> Unit) {
+fun ProductDetailScreen(onBackPressed: () -> Unit) {
     val products = FakeProducts.tamales
     val complements = FakeProducts.drinks
     val pagerState = rememberPagerState(pageCount = products.size, initialOffscreenLimit = 2)
@@ -208,6 +208,8 @@ fun DetailBody(
             content = {
                 Row(Modifier) {
                     Text(text = "Agregar 1 al carrito")
+                    Spacer(modifier = Modifier.width(48.dp))
+                    Text(text = "$12.00")
                 }
             },
         )
@@ -221,6 +223,6 @@ fun DetailBody(
 @Composable
 fun DetailScreenPreview() {
     GuajolotasTheme {
-        DetailScreen(onBackPressed = {})
+        ProductDetailScreen(onBackPressed = {})
     }
 }

@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.enzoftware.guajolotas.ui.detail.DetailScreen
+import com.enzoftware.guajolotas.ui.detail.ProductDetailScreen
 import com.enzoftware.guajolotas.ui.home.HomeScreen
 import com.enzoftware.guajolotas.ui.navigation.NavigationScreens.PRODUCT_ID
 import com.enzoftware.guajolotas.ui.search.SearchScreen
@@ -38,7 +38,7 @@ fun Navigation() {
                 type = NavType.StringType
             })
         ) {
-            DetailScreen(onBackPressed = { navController.popBackStack() })
+            ProductDetailScreen(onBackPressed = { navController.popBackStack() })
         }
     }
 }

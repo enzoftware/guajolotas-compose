@@ -50,12 +50,3 @@ fun ProductItem(product: Product, onClick: () -> Unit) {
         }
     }
 }
-
-
-@Preview
-@Composable
-private fun ProductItemPreview() {
-    GuajolotasTheme {
-        ProductItem(product = FakeProducts.mockFood, onClick = {})
-    }
-}
