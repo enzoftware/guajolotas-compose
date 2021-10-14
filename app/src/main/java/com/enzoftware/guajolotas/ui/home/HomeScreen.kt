@@ -40,6 +40,7 @@ fun HomeScreen(onClickProduct: GoToProductDetail, onClickSearch: () -> Unit) {
         TabItem.DrinksTab(stringResource(R.string.drinks), onClickProduct),
         TabItem.TamalesTab(stringResource(R.string.tamales), onClickProduct)
     )
+    viewModel.getDrinks()
 
     val pagerState = rememberPagerState(pageCount = tabs.size)
 

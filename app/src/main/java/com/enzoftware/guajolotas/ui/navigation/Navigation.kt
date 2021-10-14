@@ -38,7 +38,10 @@ fun Navigation() {
                 type = NavType.StringType
             })
         ) {
-            ProductDetailScreen(onBackPressed = { navController.popBackStack() })
+            ProductDetailScreen(
+                onBackPressed = { navController.popBackStack() },
+                productId = it.arguments?.getString(NavigationScreens.PRODUCT_ID) ?: "empty"
+            )
         }
     }
 }

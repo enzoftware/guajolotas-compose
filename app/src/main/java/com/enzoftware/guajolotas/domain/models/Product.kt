@@ -1,6 +1,7 @@
 package com.enzoftware.guajolotas.domain.models
 
 import androidx.annotation.DrawableRes
+import com.enzoftware.guajolotas.data.local.ProductEntity
 
 enum class ProductType {
     Guajolota,
@@ -11,13 +12,13 @@ enum class ProductType {
 data class Product(
     val id: String,
     val name: String,
-    private val price: Double,
+    val price: Double,
     var quantity: Int = 0,
     @DrawableRes
     val image: Int,
     @DrawableRes
     val flavorImage: Int,
-    private val type: ProductType,
+    val type: ProductType,
 ) {
 
     val formattedPrice: String
@@ -43,4 +44,14 @@ data class Product(
 
     fun isFood() = isGuajolota() || isTamal()
 }
+
+fun Product.toEntity() = ProductEntity(
+    id = id,
+    name = name,
+    price = price,
+    quantity = quantity,
+    image = image,
+    flavorImage = flavorImage,
+    type = type,
+)
 

@@ -7,4 +7,8 @@ interface ShoppingCartRepository {
 
     suspend fun getShoppingCartProducts(): Flow<List<Product>>
 
+    fun addProductToShoppingList(product: Product)
+
+    suspend fun removeProductFromShoppingList(product: Product)
+
 }

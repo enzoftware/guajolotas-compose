@@ -81,9 +81,7 @@ fun ProductsSuccessFragment(
         items(products) { product ->
             ProductItem(
                 product = product,
-                onClick = {
-                    onClickProduct(product.name)
-                },
+                onClick = { onClickProduct(product.id) },
             )
         }
     }

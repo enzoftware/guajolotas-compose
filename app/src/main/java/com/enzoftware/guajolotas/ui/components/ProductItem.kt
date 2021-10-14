@@ -12,13 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.enzoftware.guajolotas.data.FakeProducts
 import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.ui.theme.AppColors
-import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

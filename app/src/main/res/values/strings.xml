@@ -9,4 +9,7 @@
     <string name="search_icon_description">Search icon</string>
     <string name="search_product">Busca el producto</string>
     <string name="search_icon">Search icon</string>
+    <string name="guajolocombo">Guajolocombo</string>
+    <string name="detail_screen_choose_complement">Selecciona la bebida que más te guste y disfruta de tu desayuno.</string>
+    <string name="add_to_cart">Agregar 1 al carrito</string>
 </resources>

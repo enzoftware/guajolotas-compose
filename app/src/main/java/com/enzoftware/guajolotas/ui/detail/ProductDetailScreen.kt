@@ -11,10 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,13 +21,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.R
 import com.enzoftware.guajolotas.data.FakeProducts
 import com.enzoftware.guajolotas.domain.models.Product
-import com.enzoftware.guajolotas.ui.components.GuaButton
-import com.enzoftware.guajolotas.ui.components.GuaCheckBox
-import com.enzoftware.guajolotas.ui.components.ProductCounter
-import com.enzoftware.guajolotas.ui.components.ProductFlavor
+import com.enzoftware.guajolotas.ui.components.*
 import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -43,23 +38,51 @@ import kotlinx.coroutines.launch
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Composable
-fun ProductDetailScreen(onBackPressed: () -> Unit) {
+fun ProductDetailScreen(
+    onBackPressed: () -> Unit,
+    productId: String,
+    viewModel: ProductDetailViewModel = hiltViewModel(),
+) {
     val products = FakeProducts.tamales
-    val complements = FakeProducts.drinks
+    val state by viewModel.state.collectAsState()
+    viewModel.getProductDetail(productId)
+
     val pagerState = rememberPagerState(pageCount = products.size, initialOffscreenLimit = 2)
 
+    ProductDetailBody(pagerState = pagerState, state = state, onBackPressed = onBackPressed)
+
+}
+
+@ExperimentalFoundationApi
+@ExperimentalPagerApi
+@Composable
+fun ProductDetailBody(
+    pagerState: PagerState,
+    state: ProductDetailUiModel,
+    onBackPressed: () -> Unit
+) {
+    val complements = FakeProducts.drinks
+    val products = FakeProducts.tamales
     Scaffold {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp)
-        ) {
-            item {
-                DetailAppBar(onBackPressed)
+        when {
+            state.loading -> LoadingScreen()
+            state.product != null -> LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp)
+            ) {
+                item {
+                    DetailAppBar(onBackPressed)
+                }
+                item {
+                    DetailBody(
+                        products = products,
+                        complements = complements,
+                        pagerState = pagerState
+                    )
+                }
             }
-            item {
-                DetailBody(products = products, complements = complements, pagerState = pagerState)
-            }
+            state.exception != null -> Box {}
         }
     }
 }
@@ -174,7 +197,7 @@ fun DetailBody(
             }
         }
         Text(
-            text = "Guajolocombo",
+            text = stringResource(R.string.guajolocombo),
             fontSize = 24.sp,
             fontWeight = FontWeight.W600,
             textAlign = TextAlign.Start,
@@ -182,7 +205,7 @@ fun DetailBody(
                 .fillMaxWidth()
                 .padding(top = 24.dp, bottom = 8.dp)
         )
-        Text(text = "Selecciona la bebida que más te guste y disfruta de tu desayuno.")
+        Text(text = stringResource(R.string.detail_screen_choose_complement))
         Spacer(modifier = Modifier.height(8.dp))
         Box(
             modifier = Modifier
@@ -207,7 +230,7 @@ fun DetailBody(
             onClick = {},
             content = {
                 Row(Modifier) {
-                    Text(text = "Agregar 1 al carrito")
+                    Text(text = stringResource(R.string.add_to_cart))
                     Spacer(modifier = Modifier.width(48.dp))
                     Text(text = "$12.00")
                 }
@@ -223,6 +246,6 @@ fun DetailBody(
 @Composable
 fun DetailScreenPreview() {
     GuajolotasTheme {
-        ProductDetailScreen(onBackPressed = {})
+        ProductDetailScreen(onBackPressed = {}, "2")
     }
 }

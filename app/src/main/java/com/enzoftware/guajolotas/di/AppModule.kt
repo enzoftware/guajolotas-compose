@@ -57,7 +57,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideShoppingCartRepository(localDataSource: ProductLocalDataSource): ShoppingCartRepository {
-        return ShoppingCartRepositoryImpl(localDataSource = localDataSource)
+        return ShoppingCartRepositoryImpl(productLocalDataSource = localDataSource)
     }
 
 }
