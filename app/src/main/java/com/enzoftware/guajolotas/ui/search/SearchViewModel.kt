@@ -1,5 +1,7 @@
 package com.enzoftware.guajolotas.ui.search
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enzoftware.guajolotas.core.CoroutineDispatchers
@@ -19,12 +21,12 @@ class SearchViewModel @Inject constructor(
     private val coroutineDispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(SearchUiModel())
-    val state: StateFlow<SearchUiModel>
+    private val _state = MutableLiveData<SearchViewState>(SearchViewState.Loading)
+    val state: LiveData<SearchViewState>
         get() = _state
 
     fun searchProduct(query: String) {
-        emitSearchUiModel(loading = true)
+        emitSearchUiModel(SearchViewState.Loading)
         viewModelScope.launch(coroutineDispatchers.io) {
             val result = searchProductUseCase.searchProduct(query)
             withContext(coroutineDispatchers.main) {
@@ -37,25 +39,21 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun searchProductSuccess(data: List<Product>) {
-        emitSearchUiModel(products = data)
+        emitSearchUiModel(SearchViewState.Success(data))
     }
 
     private fun searchProductError(exception: Exception) {
-        emitSearchUiModel(exception = exception)
+        emitSearchUiModel(SearchViewState.Error(exception))
     }
 
-    private fun emitSearchUiModel(
-        loading: Boolean = false,
-        products: List<Product>? = null,
-        exception: Exception? = null
-    ) {
-        val uiModel = SearchUiModel(loading, products, exception)
-        _state.value = uiModel
+    private fun emitSearchUiModel(searchViewState: SearchViewState) {
+        _state.value = searchViewState
     }
 }
 
-data class SearchUiModel(
-    val loading: Boolean = false,
-    val products: List<Product>? = null,
-    val exception: Exception? = null,
-)
+sealed class SearchViewState {
+    object Loading : SearchViewState()
+    data class Success(val products: List<Product>) : SearchViewState()
+    data class Error(val exception: Exception) : SearchViewState()
+}
+

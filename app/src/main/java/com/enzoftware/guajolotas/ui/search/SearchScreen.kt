@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +22,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.R
 import com.enzoftware.guajolotas.domain.models.Product
-import com.enzoftware.guajolotas.ui.components.LoadingScreen
 import com.enzoftware.guajolotas.ui.components.ProductItem
 import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
@@ -29,7 +29,7 @@ import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.observeAsState()
 
     Scaffold {
         Column(
@@ -39,11 +39,11 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
         ) {
             SearchTopBar(viewModel)
             Spacer(modifier = Modifier.height(16.dp))
-            when {
-                state.loading -> LoadingScreen()
-                state.products != null -> SearchProductsResult(products = state.products!!)
-                !state.loading && state.products == null && state.exception == null -> SearchInitialScreen()
-            }
+//            when (state) {
+//                is SearchViewState.Loading -> LoadingScreen()
+//                is SearchViewState.Success -> SearchProductsResult(state.products)
+//                is SearchViewState.Error -> ErrorScreen(state.exception)
+//            }
         }
     }
 }

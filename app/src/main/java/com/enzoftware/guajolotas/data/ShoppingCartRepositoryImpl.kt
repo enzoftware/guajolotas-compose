@@ -13,8 +13,8 @@ class ShoppingCartRepositoryImpl @Inject constructor(private val productLocalDat
         return productLocalDataSource.getShoppingCart()
     }
 
-    override fun addProductToShoppingList(product: Product) {
-        val entity = product.toEntity()
+    override suspend fun addProductToShoppingList(product: Product) {
+        productLocalDataSource.addProductToShoppingCart(product)
     }
 
     override suspend fun removeProductFromShoppingList(product: Product) {

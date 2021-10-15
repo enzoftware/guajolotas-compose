@@ -11,6 +11,7 @@ import com.enzoftware.guajolotas.ui.detail.ProductDetailScreen
 import com.enzoftware.guajolotas.ui.home.HomeScreen
 import com.enzoftware.guajolotas.ui.navigation.NavigationScreens.PRODUCT_ID
 import com.enzoftware.guajolotas.ui.search.SearchScreen
+import com.enzoftware.guajolotas.ui.shopping.ShoppingCartScreen
 import com.enzoftware.guajolotas.ui.splash.SplashScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -43,6 +44,11 @@ fun Navigation() {
                 productId = it.arguments?.getString(NavigationScreens.PRODUCT_ID) ?: "empty"
             )
         }
+        composable(
+            route = NavigationScreens.SHOPPING_CART
+        ){
+            ShoppingCartScreen()
+        }
     }
 }
 
@@ -52,4 +58,5 @@ object NavigationScreens {
     const val SEARCH = "search_screen"
     const val DETAIL = "detail_screen"
     const val PRODUCT_ID = "product_id"
+    const val SHOPPING_CART = "shopping_cart"
 }

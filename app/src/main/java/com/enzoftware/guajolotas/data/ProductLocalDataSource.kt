@@ -4,6 +4,7 @@ import com.enzoftware.guajolotas.core.ResultState
 import com.enzoftware.guajolotas.data.local.ProductDao
 import com.enzoftware.guajolotas.data.local.toProduct
 import com.enzoftware.guajolotas.domain.models.Product
+import com.enzoftware.guajolotas.domain.models.toEntity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -38,6 +39,10 @@ class ProductLocalDataSource @Inject constructor(private val productDao: Product
         return productDao.getShoppingCart().map {
             it.map { entity -> entity.toProduct() }
         }
+    }
+
+    suspend fun addProductToShoppingCart(product: Product) {
+        productDao.addProduct(product.toEntity())
     }
 
 }
