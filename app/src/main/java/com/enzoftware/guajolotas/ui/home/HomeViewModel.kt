@@ -19,12 +19,12 @@ class HomeViewModel @Inject constructor(
     private val coroutineDispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(HomeViewState())
-    val state: StateFlow<HomeViewState>
+    private val _state = MutableStateFlow<HomeUiModel>(HomeUiModel.Loading)
+    val state: StateFlow<HomeUiModel>
         get() = _state
 
     fun getDrinks() {
-        emitHomeViewState(loading = true)
+        emitHomeViewState(HomeUiModel.Loading)
         viewModelScope.launch(coroutineDispatchers.io) {
             val result = fetchProductsUseCase.getDrinkProducts()
             withContext(coroutineDispatchers.main) {
@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getTamales() {
-        emitHomeViewState(loading = true)
+        emitHomeViewState(HomeUiModel.Loading)
         viewModelScope.launch(coroutineDispatchers.io) {
             val result = fetchProductsUseCase.getTamalesProducts()
             withContext(coroutineDispatchers.main) {
@@ -50,7 +50,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun getGuajolotas() {
-        emitHomeViewState(loading = true)
+        emitHomeViewState(HomeUiModel.Loading)
         viewModelScope.launch(coroutineDispatchers.io) {
             val result = fetchProductsUseCase.getGuajolotasProducts()
             withContext(coroutineDispatchers.main) {
@@ -63,26 +63,15 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getProductsError(exception: Exception) {
-        emitHomeViewState(exception = exception)
+        emitHomeViewState(HomeUiModel.Error(exception))
     }
 
     private fun getProductsSuccess(products: List<Product>) {
-        emitHomeViewState(products = products)
+        emitHomeViewState(HomeUiModel.ProductsSuccess(products))
     }
 
-    private fun emitHomeViewState(
-        products: List<Product>? = null,
-        loading: Boolean = false,
-        exception: Exception? = null,
-    ) {
-        val uiModel = HomeViewState(products, loading, exception.toString())
-        _state.value = uiModel
+    private fun emitHomeViewState(homeUiModel: HomeUiModel) {
+        _state.value = homeUiModel
     }
 
 }
-
-data class HomeViewState(
-    val products: List<Product>? = null,
-    val loading: Boolean = false,
-    val error: String? = null
-)

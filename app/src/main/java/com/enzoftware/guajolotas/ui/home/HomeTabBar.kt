@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.ui.GoToProductDetail
+import com.enzoftware.guajolotas.ui.components.ErrorScreen
 import com.enzoftware.guajolotas.ui.components.LoadingScreen
 import com.enzoftware.guajolotas.ui.components.ProductItem
 import com.enzoftware.guajolotas.ui.theme.AppColors
@@ -63,12 +64,13 @@ fun TabsContent(
 ) {
     val state by homeViewModel.state.collectAsState()
 
-    when {
-        state.loading -> LoadingScreen()
-        state.products != null -> ProductsSuccessFragment(
-            products = state.products!!,
+    when (state) {
+        is HomeUiModel.Loading -> LoadingScreen()
+        is HomeUiModel.ProductsSuccess -> ProductsSuccessFragment(
+            products = (state as HomeUiModel.ProductsSuccess).products,
             onClickProduct = onClick,
         )
+        is HomeUiModel.Error -> ErrorScreen(exception = (state as HomeUiModel.Error).exception)
     }
 
 }

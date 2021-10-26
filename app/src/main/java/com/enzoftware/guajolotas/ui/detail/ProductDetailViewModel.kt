@@ -19,13 +19,13 @@ class ProductDetailViewModel @Inject constructor(
     private val coroutineDispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(ProductDetailUiModel())
+    private val _state = MutableStateFlow<ProductDetailUiModel>(ProductDetailUiModel.Loading)
 
     val state: StateFlow<ProductDetailUiModel>
         get() = _state
 
     fun getProductDetail(id: String) {
-        emitProductDetailUiModel(loading = true)
+        emitProductDetailUiModel(ProductDetailUiModel.Loading)
         viewModelScope.launch(coroutineDispatchers.io) {
             val result = getProductDetailUseCase.getProductDetail(id)
             withContext(coroutineDispatchers.main) {
@@ -38,27 +38,14 @@ class ProductDetailViewModel @Inject constructor(
     }
 
     private fun getProductDetailSuccess(product: Product) {
-        emitProductDetailUiModel(product = product)
+        emitProductDetailUiModel(ProductDetailUiModel.ProductDetail(product))
     }
 
     private fun getProductDetailError(exception: Exception) {
-        emitProductDetailUiModel(exception = exception)
+        emitProductDetailUiModel(ProductDetailUiModel.Error(exception))
     }
 
-    private fun emitProductDetailUiModel(
-        loading: Boolean = false,
-        product: Product? = null,
-        exception: Exception? = null
-    ) {
-        val uiModel = ProductDetailUiModel(loading, product, exception)
-        _state.value = uiModel
+    private fun emitProductDetailUiModel(productDetailUiModel: ProductDetailUiModel) {
+        _state.value = productDetailUiModel
     }
-
 }
-
-
-data class ProductDetailUiModel(
-    val loading: Boolean = false,
-    val product: Product? = null,
-    val exception: Exception? = null
-)

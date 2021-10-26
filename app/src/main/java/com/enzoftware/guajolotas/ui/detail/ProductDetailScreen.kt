@@ -64,9 +64,9 @@ fun ProductDetailBody(
     val complements = FakeProducts.drinks
     val products = FakeProducts.tamales
     Scaffold {
-        when {
-            state.loading -> LoadingScreen()
-            state.product != null -> LazyColumn(
+        when (state) {
+            is ProductDetailUiModel.Loading -> LoadingScreen()
+            is ProductDetailUiModel.ProductDetail -> LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(24.dp)
@@ -76,13 +76,13 @@ fun ProductDetailBody(
                 }
                 item {
                     DetailBody(
-                        products = products,
+                        products = listOf(state.product),
                         complements = complements,
                         pagerState = pagerState
                     )
                 }
             }
-            state.exception != null -> Box {}
+            is ProductDetailUiModel.Error -> ErrorScreen(exception = state.exception)
         }
     }
 }

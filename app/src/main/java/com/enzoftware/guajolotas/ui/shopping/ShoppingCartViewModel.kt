@@ -39,7 +39,7 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-    fun addProductToShoppingList(product: Product){
+    fun addProductToShoppingList(product: Product) {
         viewModelScope.launch(coroutineDispatchers.io) {
             addProductToShoppingCart.addProduct(product)
         }
@@ -48,10 +48,4 @@ class ShoppingCartViewModel @Inject constructor(
     private fun emitShoppingCartUiModel(shoppingCartUiModel: ShoppingCartUiModel) {
         _state.value = shoppingCartUiModel
     }
-}
-
-sealed class ShoppingCartUiModel {
-    object Loading : ShoppingCartUiModel()
-    data class ShoppingCartSuccess(val products: List<Product>) : ShoppingCartUiModel()
-    data class Error(val exception: Exception) : ShoppingCartUiModel()
 }
