@@ -30,6 +30,9 @@ fun Navigation() {
                 onClickSearch = {
                     navController.navigate(NavigationScreens.SEARCH)
                 },
+                onClickCart = {
+                    navController.navigate(NavigationScreens.SHOPPING_CART)
+                }
             )
         }
         composable(route = NavigationScreens.SEARCH) { SearchScreen() }

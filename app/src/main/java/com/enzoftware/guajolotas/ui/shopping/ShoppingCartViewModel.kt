@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enzoftware.guajolotas.core.CoroutineDispatchers
 import com.enzoftware.guajolotas.domain.models.Product
+import com.enzoftware.guajolotas.domain.usecase.AddProductToShoppingCart
 import com.enzoftware.guajolotas.domain.usecase.GetShoppingCartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,33 +16,42 @@ import javax.inject.Inject
 @HiltViewModel
 class ShoppingCartViewModel @Inject constructor(
     private val getShoppingCartUseCase: GetShoppingCartUseCase,
+    private val addProductToShoppingCart: AddProductToShoppingCart,
     private val coroutineDispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
+    private val _state = MutableStateFlow<ShoppingCartUiModel>(ShoppingCartUiModel.Loading)
 
-    val state = MutableStateFlow(ShoppingCartUiModel())
+    val state: StateFlow<ShoppingCartUiModel>
+        get() = _state
 
     fun getShoppingCartProducts() {
-        viewModelScope.launch {
-            getShoppingCartUseCase.getShoppingCart().collect { products ->
-                emitShoppingCartUiModel(products = products)
+        emitShoppingCartUiModel(ShoppingCartUiModel.Loading)
+        viewModelScope.launch(coroutineDispatchers.io) {
+            val cartProductsFlow = getShoppingCartUseCase.getShoppingCart()
+            try {
+                cartProductsFlow.collect { products ->
+                    emitShoppingCartUiModel(ShoppingCartUiModel.ShoppingCartSuccess(products))
+                }
+            } catch (e: Exception) {
+                emitShoppingCartUiModel(ShoppingCartUiModel.Error(e))
             }
         }
     }
 
-    private fun emitShoppingCartUiModel(
-        loading: Boolean = false,
-        products: List<Product>? = null,
-        exception: Exception? = null
-    ) {
-        val uiModel = ShoppingCartUiModel(loading, products, exception)
-        state.value = uiModel
+    fun addProductToShoppingList(product: Product){
+        viewModelScope.launch(coroutineDispatchers.io) {
+            addProductToShoppingCart.addProduct(product)
+        }
+    }
+
+    private fun emitShoppingCartUiModel(shoppingCartUiModel: ShoppingCartUiModel) {
+        _state.value = shoppingCartUiModel
     }
 }
 
-
-data class ShoppingCartUiModel(
-    val loading: Boolean = false,
-    val products: List<Product>? = null,
-    val exception: Exception? = null,
-)
+sealed class ShoppingCartUiModel {
+    object Loading : ShoppingCartUiModel()
+    data class ShoppingCartSuccess(val products: List<Product>) : ShoppingCartUiModel()
+    data class Error(val exception: Exception) : ShoppingCartUiModel()
+}

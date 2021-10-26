@@ -14,7 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,6 +29,7 @@ import com.google.accompanist.pager.rememberPagerState
 fun HomeScreen(
     onClickProduct: GoToProductDetail,
     onClickSearch: () -> Unit,
+    onClickCart: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
 
@@ -47,7 +47,7 @@ fun HomeScreen(
                 .padding(24.dp)
                 .fillMaxSize()
         ) {
-            AppBar()
+            AppBar(onClickShoppingCart = onClickCart)
             Spacer(modifier = Modifier.height(32.dp))
             HomeHeader()
             Spacer(modifier = Modifier.height(32.dp))
@@ -60,7 +60,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun AppBar() {
+private fun AppBar(onClickShoppingCart: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth(),
@@ -69,7 +69,10 @@ private fun AppBar() {
         GuajolotaLogo(modifier = Modifier.size(64.dp))
         Icon(
             painter = painterResource(id = R.drawable.shopping_cart),
-            contentDescription = "Guajolota app bar"
+            contentDescription = "Guajolota app bar",
+            modifier = Modifier.clickable {
+                onClickShoppingCart()
+            }
         )
     }
 }
@@ -104,14 +107,5 @@ fun SearchBar(onClick: () -> Unit) {
             )
             Text(text = "Sabor de Guajolota, bebida...")
         }
-    }
-}
-
-@ExperimentalPagerApi
-@Preview(showBackground = true)
-@Composable
-fun HomePreview() {
-    GuajolotasTheme {
-        HomeScreen(onClickProduct = {}, onClickSearch = {})
     }
 }
