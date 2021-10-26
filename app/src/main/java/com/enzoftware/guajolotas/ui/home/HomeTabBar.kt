@@ -2,90 +2,29 @@ package com.enzoftware.guajolotas.ui.home
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.domain.models.Product
-import com.enzoftware.guajolotas.ui.ComposableFun
 import com.enzoftware.guajolotas.ui.GoToProductDetail
 import com.enzoftware.guajolotas.ui.components.LoadingScreen
 import com.enzoftware.guajolotas.ui.components.ProductItem
 import com.enzoftware.guajolotas.ui.theme.AppColors
-import com.google.accompanist.pager.*
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.pagerTabIndicatorOffset
 import kotlinx.coroutines.launch
 
-sealed class TabItem(val title: String, val content: ComposableFun) {
-
-    data class DrinksTab(val tabTitle: String, val onClick: GoToProductDetail) :
-        TabItem(tabTitle, { DrinkFragment(onClickProduct = onClick) })
-
-    data class TamalesTab(val tabTitle: String, val onClick: GoToProductDetail) :
-        TabItem(tabTitle, { TamalesFragment(onClickProduct = onClick) })
-
-    data class GuajolotaTab(val tabTitle: String, val onClick: GoToProductDetail) :
-        TabItem(tabTitle, { GuajolotasFragment(onClickProduct = onClick) })
-}
-
-@Composable
-fun DrinkFragment(
-    viewModel: HomeViewModel = hiltViewModel(),
-    onClickProduct: GoToProductDetail
-) {
-    val state by viewModel.state.collectAsState()
-
-    when {
-        state.loading -> LoadingScreen()
-        state.products != null -> ProductsSuccessFragment(state.products!!, onClickProduct)
-    }
-}
-
-@Composable
-fun TamalesFragment(
-    viewModel: HomeViewModel = hiltViewModel(),
-    onClickProduct: GoToProductDetail
-) {
-    val state by viewModel.state.collectAsState()
-
-    when {
-        state.loading -> LoadingScreen()
-        state.products != null -> ProductsSuccessFragment(state.products!!, onClickProduct)
-    }
-}
-
-@Composable
-fun GuajolotasFragment(
-    viewModel: HomeViewModel = hiltViewModel(),
-    onClickProduct: GoToProductDetail
-) {
-    val state by viewModel.state.collectAsState()
-
-    when {
-        state.loading -> LoadingScreen()
-        state.products != null -> ProductsSuccessFragment(state.products!!, onClickProduct)
-    }
-}
-
-@Composable
-fun ProductsSuccessFragment(
-    products: List<Product>,
-    onClickProduct: GoToProductDetail
-) {
-    LazyColumn {
-        items(products) { product ->
-            ProductItem(
-                product = product,
-                onClick = { onClickProduct(product.id) },
-            )
-        }
-    }
-}
+data class TabItem(val title: String, val onItemSelected: () -> Unit)
 
 @ExperimentalPagerApi
 @Composable
@@ -106,6 +45,7 @@ fun TabBar(tabs: List<TabItem>, pagerState: PagerState) {
                 text = { Text(tab.title, fontSize = 16.sp) },
                 selected = pagerState.currentPage == index,
                 onClick = {
+                    tab.onItemSelected()
                     scope.launch {
                         pagerState.animateScrollToPage(index)
                     }
@@ -118,28 +58,32 @@ fun TabBar(tabs: List<TabItem>, pagerState: PagerState) {
 @ExperimentalPagerApi
 @Composable
 fun TabsContent(
-    tabs: List<TabItem>,
-    pagerState: PagerState,
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    onClick: GoToProductDetail
 ) {
-    HorizontalPager(
-        state = pagerState
-    ) { page ->
-        tabs[page].content()
+    val state by homeViewModel.state.collectAsState()
+
+    when {
+        state.loading -> LoadingScreen()
+        state.products != null -> ProductsSuccessFragment(
+            products = state.products!!,
+            onClickProduct = onClick,
+        )
     }
+
 }
 
-
-@ExperimentalMaterialApi
-@ExperimentalPagerApi
-@Preview(showBackground = true)
 @Composable
-fun TabsPreview() {
-    val tabs = listOf(
-        TabItem.DrinksTab(onClick = {}, tabTitle = ""),
-        TabItem.TamalesTab(onClick = {}, tabTitle = ""),
-        TabItem.GuajolotaTab(onClick = {}, tabTitle = "")
-    )
-    val pagerState = rememberPagerState(pageCount = tabs.size)
-
-    TabBar(tabs = tabs, pagerState = pagerState)
+fun ProductsSuccessFragment(
+    products: List<Product>,
+    onClickProduct: GoToProductDetail
+) {
+    LazyColumn {
+        items(products) { product ->
+            ProductItem(
+                product = product,
+                onClick = { onClickProduct(product.id) },
+            )
+        }
+    }
 }

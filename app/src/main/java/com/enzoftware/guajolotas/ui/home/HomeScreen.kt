@@ -7,8 +7,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,18 +27,17 @@ import com.google.accompanist.pager.rememberPagerState
 
 @ExperimentalPagerApi
 @Composable
-fun HomeScreen(onClickProduct: GoToProductDetail, onClickSearch: () -> Unit) {
-
-    val viewModel = hiltViewModel<HomeViewModel>()
-
-    val state by viewModel.state.collectAsState()
+fun HomeScreen(
+    onClickProduct: GoToProductDetail,
+    onClickSearch: () -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
 
     val tabs = listOf(
-        TabItem.GuajolotaTab(stringResource(R.string.guajolotas), onClickProduct),
-        TabItem.DrinksTab(stringResource(R.string.drinks), onClickProduct),
-        TabItem.TamalesTab(stringResource(R.string.tamales), onClickProduct)
+        TabItem(stringResource(R.string.guajolotas)) { viewModel.getGuajolotas() },
+        TabItem(stringResource(R.string.drinks)) { viewModel.getDrinks() },
+        TabItem(stringResource(R.string.tamales)) { viewModel.getTamales() }
     )
-    viewModel.getDrinks()
 
     val pagerState = rememberPagerState(pageCount = tabs.size)
 
@@ -57,7 +54,7 @@ fun HomeScreen(onClickProduct: GoToProductDetail, onClickSearch: () -> Unit) {
             SearchBar(onClickSearch)
             Spacer(modifier = Modifier.height(32.dp))
             TabBar(tabs = tabs, pagerState = pagerState)
-            TabsContent(tabs = tabs, pagerState = pagerState)
+            TabsContent(onClick = onClickProduct)
         }
     }
 }
@@ -72,7 +69,7 @@ private fun AppBar() {
         GuajolotaLogo(modifier = Modifier.size(64.dp))
         Icon(
             painter = painterResource(id = R.drawable.shopping_cart),
-            contentDescription = "Appbar"
+            contentDescription = "Guajolota app bar"
         )
     }
 }
