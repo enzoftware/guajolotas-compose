@@ -7,7 +7,7 @@ interface ProductRepository {
 
     suspend fun fetchProducts(): ResultState<List<Product>>
 
-    suspend fun getProductDetail(name: String): ResultState<Product>
+    suspend fun getProductDetail(id: String): ResultState<Product>
 
     suspend fun searchProduct(name: String): ResultState<List<Product>>
 }

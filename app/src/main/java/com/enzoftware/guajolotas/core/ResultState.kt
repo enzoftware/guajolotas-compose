@@ -11,7 +11,6 @@ sealed class ResultState<out T : Any> {
 
 }
 
-
 fun <T : Any> ResultState<T>.error(message: String? = null) = (this as? ResultState.Error)?.exception
         ?: Exception(message ?: "unknown error")
 
