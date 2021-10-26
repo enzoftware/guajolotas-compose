@@ -13,7 +13,7 @@ import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 @Composable
 fun GuajolotaLogo(modifier: Modifier) {
     Image(
-        painter = painterResource(id = R.drawable.ic_launcher_background),
+        painter = painterResource(id = R.drawable.flavor_guayaba),
         contentDescription = "App logo",
         modifier = modifier
     )

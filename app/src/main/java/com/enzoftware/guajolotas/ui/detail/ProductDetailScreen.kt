@@ -227,7 +227,9 @@ fun DetailBody(
         }
         Spacer(modifier = Modifier.height(8.dp))
         GuaButton(
-            onClick = {},
+            onClick = {
+
+            },
             content = {
                 Row(Modifier) {
                     Text(text = stringResource(R.string.add_to_cart))

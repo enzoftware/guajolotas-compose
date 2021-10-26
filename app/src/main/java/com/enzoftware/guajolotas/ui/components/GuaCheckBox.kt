@@ -50,7 +50,6 @@ fun GuaCheckBox(product: Product, onClick: () -> Unit) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = product.name, fontSize = 12.sp, fontWeight = FontWeight.W600)
             Spacer(modifier = Modifier.height(4.dp))
-            // TODO: Handle currency inside the product model
             Text(
                 text = "+ ${product.formattedPrice}",
                 fontSize = 12.sp,

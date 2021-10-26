@@ -9,8 +9,6 @@ import com.enzoftware.guajolotas.core.ResultState
 import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.domain.usecase.SearchProductUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -21,7 +19,7 @@ class SearchViewModel @Inject constructor(
     private val coroutineDispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<SearchViewState>(SearchViewState.Loading)
+    private val _state = MutableLiveData<SearchViewState>(SearchViewState.Initial)
     val state: LiveData<SearchViewState>
         get() = _state
 
@@ -50,10 +48,3 @@ class SearchViewModel @Inject constructor(
         _state.value = searchViewState
     }
 }
-
-sealed class SearchViewState {
-    object Loading : SearchViewState()
-    data class Success(val products: List<Product>) : SearchViewState()
-    data class Error(val exception: Exception) : SearchViewState()
-}
-

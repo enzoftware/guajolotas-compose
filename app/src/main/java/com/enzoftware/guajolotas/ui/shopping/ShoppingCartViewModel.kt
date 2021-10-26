@@ -1,12 +1,14 @@
 package com.enzoftware.guajolotas.ui.shopping
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.enzoftware.guajolotas.core.CoroutineDispatchers
 import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.domain.usecase.GetShoppingCartUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,20 +21,16 @@ class ShoppingCartViewModel @Inject constructor(
     val state = MutableStateFlow(ShoppingCartUiModel())
 
     fun getShoppingCartProducts() {
-
-    }
-
-    private fun getShoppingCartError(exception: Exception) {
-        TODO("Not yet implemented")
-    }
-
-    private fun shoppingCartProducts() {
-
+        viewModelScope.launch {
+            getShoppingCartUseCase.getShoppingCart().collect { products ->
+                emitShoppingCartUiModel(products = products)
+            }
+        }
     }
 
     private fun emitShoppingCartUiModel(
         loading: Boolean = false,
-        products: Flow<List<Product>>? = null,
+        products: List<Product>? = null,
         exception: Exception? = null
     ) {
         val uiModel = ShoppingCartUiModel(loading, products, exception)
@@ -43,6 +41,6 @@ class ShoppingCartViewModel @Inject constructor(
 
 data class ShoppingCartUiModel(
     val loading: Boolean = false,
-    val products: Flow<List<Product>>? = null,
+    val products: List<Product>? = null,
     val exception: Exception? = null,
 )

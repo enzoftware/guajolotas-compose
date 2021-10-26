@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.R
 import com.enzoftware.guajolotas.domain.models.Product
+import com.enzoftware.guajolotas.ui.components.ErrorScreen
+import com.enzoftware.guajolotas.ui.components.LoadingScreen
 import com.enzoftware.guajolotas.ui.components.ProductItem
 import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
@@ -39,11 +41,12 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
         ) {
             SearchTopBar(viewModel)
             Spacer(modifier = Modifier.height(16.dp))
-//            when (state) {
-//                is SearchViewState.Loading -> LoadingScreen()
-//                is SearchViewState.Success -> SearchProductsResult(state.products)
-//                is SearchViewState.Error -> ErrorScreen(state.exception)
-//            }
+            when (state) {
+                is SearchViewState.Initial -> SearchInitialScreen()
+                is SearchViewState.Loading -> LoadingScreen()
+                is SearchViewState.Success -> SearchProductsResult((state as SearchViewState.Success).products)
+                is SearchViewState.Error -> ErrorScreen((state as SearchViewState.Error).exception)
+            }
         }
     }
 }
