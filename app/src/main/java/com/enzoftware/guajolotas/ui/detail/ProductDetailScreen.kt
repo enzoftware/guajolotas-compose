@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.R
-import com.enzoftware.guajolotas.data.FakeProducts
 import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.ui.components.*
 import com.enzoftware.guajolotas.ui.theme.AppColors
@@ -43,13 +42,10 @@ fun ProductDetailScreen(
     productId: String,
     viewModel: ProductDetailViewModel = hiltViewModel(),
 ) {
-    val products = FakeProducts.tamales
     val state by viewModel.state.collectAsState()
     viewModel.getProductDetail(productId)
 
-    val pagerState = rememberPagerState(pageCount = products.size, initialOffscreenLimit = 2)
-
-    ProductDetailBody(pagerState = pagerState, state = state, onBackPressed = onBackPressed)
+    ProductDetailBody(state = state, onBackPressed = onBackPressed)
 
 }
 
@@ -57,29 +53,32 @@ fun ProductDetailScreen(
 @ExperimentalPagerApi
 @Composable
 fun ProductDetailBody(
-    pagerState: PagerState,
     state: ProductDetailUiModel,
     onBackPressed: () -> Unit
 ) {
-    val complements = FakeProducts.drinks
-    val products = FakeProducts.tamales
     Scaffold {
         when (state) {
             is ProductDetailUiModel.Loading -> LoadingScreen()
-            is ProductDetailUiModel.ProductDetail -> LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(24.dp)
-            ) {
-                item {
-                    DetailAppBar(onBackPressed)
-                }
-                item {
-                    DetailBody(
-                        products = listOf(state.product),
-                        complements = complements,
-                        pagerState = pagerState
-                    )
+            is ProductDetailUiModel.ProductDetail -> {
+                val pagerState = rememberPagerState(
+                    pageCount = state.productDetailModel.productsCategory.size,
+                    initialOffscreenLimit = 2
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(24.dp)
+                ) {
+                    item {
+                        DetailAppBar(onBackPressed)
+                    }
+                    item {
+                        DetailBody(
+                            products = state.productDetailModel.productsCategory,
+                            complements = state.productDetailModel.complements,
+                            pagerState = pagerState
+                        )
+                    }
                 }
             }
             is ProductDetailUiModel.Error -> ErrorScreen(exception = state.exception)

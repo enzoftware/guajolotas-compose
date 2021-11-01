@@ -6,6 +6,7 @@ import com.enzoftware.guajolotas.core.CoroutineDispatchers
 import com.enzoftware.guajolotas.core.ResultState
 import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.domain.usecase.GetProductDetailUseCase
+import com.enzoftware.guajolotas.domain.usecase.ProductDetailModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,7 +38,7 @@ class ProductDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getProductDetailSuccess(product: Product) {
+    private fun getProductDetailSuccess(product: ProductDetailModel) {
         emitProductDetailUiModel(ProductDetailUiModel.ProductDetail(product))
     }
 

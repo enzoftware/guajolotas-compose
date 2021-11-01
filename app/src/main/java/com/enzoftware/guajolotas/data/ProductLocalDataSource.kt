@@ -14,7 +14,7 @@ import javax.inject.Inject
 class ProductLocalDataSource @Inject constructor(private val productDao: ProductDao) {
 
     suspend fun fetchProducts(): ResultState<List<Product>> {
-        delay(2000)
+        delay(1000)
         val response = FakeProducts.allProducts
         return ResultState.Success(response)
     }
@@ -27,7 +27,7 @@ class ProductLocalDataSource @Inject constructor(private val productDao: Product
 
 
     suspend fun searchProduct(name: String): ResultState<List<Product>> {
-        delay(1500)
+        delay(1000)
         val locale = Locale.getDefault()
         val response = FakeProducts.allProducts.filter {
             it.name.lowercase(locale).contains(name.lowercase(locale))

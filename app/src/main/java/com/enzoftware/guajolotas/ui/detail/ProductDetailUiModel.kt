@@ -1,9 +1,9 @@
 package com.enzoftware.guajolotas.ui.detail
 
-import com.enzoftware.guajolotas.domain.models.Product
+import com.enzoftware.guajolotas.domain.usecase.ProductDetailModel
 
 sealed class ProductDetailUiModel {
-    object Loading: ProductDetailUiModel()
-    data class ProductDetail(val product: Product): ProductDetailUiModel()
-    data class Error(val exception: Exception): ProductDetailUiModel()
+    object Loading : ProductDetailUiModel()
+    data class ProductDetail(val productDetailModel: ProductDetailModel) : ProductDetailUiModel()
+    data class Error(val exception: Exception) : ProductDetailUiModel()
 }
