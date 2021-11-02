@@ -14,20 +14,20 @@ import javax.inject.Inject
 class ProductLocalDataSource @Inject constructor(private val productDao: ProductDao) {
 
     suspend fun fetchProducts(): ResultState<List<Product>> {
-        delay(1000)
+        delay(DELAY_TIME)
         val response = FakeProducts.allProducts
         return ResultState.Success(response)
     }
 
     suspend fun fetchProductDetail(id: String): ResultState<Product> {
-        delay(1000)
+        delay(DELAY_TIME)
         val response = FakeProducts.allProducts.find { it.id == id }
         return ResultState.Success(response!!)
     }
 
 
     suspend fun searchProduct(name: String): ResultState<List<Product>> {
-        delay(1000)
+        delay(DELAY_TIME)
         val locale = Locale.getDefault()
         val response = FakeProducts.allProducts.filter {
             it.name.lowercase(locale).contains(name.lowercase(locale))
@@ -35,14 +35,18 @@ class ProductLocalDataSource @Inject constructor(private val productDao: Product
         return ResultState.Success(response)
     }
 
-    suspend fun getShoppingCart(): Flow<List<Product>> {
+    fun getShoppingCart(): Flow<List<Product>> {
         return productDao.getShoppingCart().map {
             it.map { entity -> entity.toProduct() }
         }
     }
 
-    suspend fun addProductToShoppingCart(product: Product) {
+    fun addProductToShoppingCart(product: Product) {
         productDao.addProduct(product.toEntity())
+    }
+
+    companion object {
+        const val DELAY_TIME = 250L
     }
 
 }

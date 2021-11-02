@@ -7,17 +7,16 @@ import com.enzoftware.guajolotas.domain.models.ProductType
 import com.enzoftware.guajolotas.domain.repository.ProductRepository
 import javax.inject.Inject
 
-class GetProductDetailUseCase @Inject constructor(private val productRepository: ProductRepository) {
+class GetProductDetailUseCase @Inject constructor(private val repository: ProductRepository) {
 
     suspend fun getProductDetail(id: String): ResultState<ProductDetailModel> {
-        val productDetail = productRepository.getProductDetail(id)
-        if (productDetail is ResultState.Success) {
-            val productsCategory =
-                productRepository.fetchProductByType(productDetail.data.type).success()
-                    ?: emptyList()
-            val selectedProductIndex = productsCategory.indexOf(productDetail.data)
-            val type = if (productDetail.data.isFood()) ProductType.Drink else ProductType.Guajolota
-            val complements = productRepository.fetchProductByType(type).success() ?: emptyList()
+        val detail = repository.getProductDetail(id)
+        if (detail is ResultState.Success) {
+            val productsCategory = repository.fetchProductByType(detail.data.type).success()
+                ?: emptyList()
+            val selectedProductIndex = productsCategory.indexOf(detail.data)
+            val type = if (detail.data.isFood()) ProductType.Drink else ProductType.Guajolota
+            val complements = repository.fetchProductByType(type).success() ?: emptyList()
             return ResultState.Success(
                 ProductDetailModel(
                     selectedProductIndex,

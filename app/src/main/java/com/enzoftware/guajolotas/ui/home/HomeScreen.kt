@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.R
 import com.enzoftware.guajolotas.ui.GoToProductDetail
 import com.enzoftware.guajolotas.ui.components.GuajolotaLogo
+import com.enzoftware.guajolotas.ui.components.ShoppingCartBadge
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
@@ -59,6 +61,7 @@ fun HomeScreen(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun AppBar(onClickShoppingCart: () -> Unit) {
     Row(
@@ -67,13 +70,7 @@ private fun AppBar(onClickShoppingCart: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         GuajolotaLogo(modifier = Modifier.size(64.dp))
-        Icon(
-            painter = painterResource(id = R.drawable.shopping_cart),
-            contentDescription = "Guajolota app bar",
-            modifier = Modifier.clickable {
-                onClickShoppingCart()
-            }
-        )
+        ShoppingCartBadge(onClick = onClickShoppingCart)
     }
 }
 

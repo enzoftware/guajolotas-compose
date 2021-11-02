@@ -7,6 +7,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,13 +21,17 @@ import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.ui.theme.AppColors
 
 @Composable
-fun GuaCheckBox(product: Product, onClick: () -> Unit) {
+fun ComplementCheckBox(product: Product, onClick: () -> Unit) {
+    val checkedState = remember { mutableStateOf(false) }
     Card(
         shape = RoundedCornerShape(20.dp),
         backgroundColor = Color.White,
         modifier = Modifier
             .padding(8.dp)
-            .clickable { onClick() }) {
+            .clickable {
+                checkedState.value = !checkedState.value
+                onClick()
+            }) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row {
                 Image(
@@ -42,7 +48,7 @@ fun GuaCheckBox(product: Product, onClick: () -> Unit) {
                     contentAlignment = Alignment.TopEnd,
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.unchecked),
+                        painter = painterResource(id = if (checkedState.value) R.drawable.checked else R.drawable.unchecked),
                         contentDescription = "Checkbox state"
                     )
                 }

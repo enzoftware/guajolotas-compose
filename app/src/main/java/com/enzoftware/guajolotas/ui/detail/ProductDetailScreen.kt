@@ -45,23 +45,13 @@ fun ProductDetailScreen(
     val state by viewModel.state.collectAsState()
     viewModel.getProductDetail(productId)
 
-    ProductDetailBody(state = state, onBackPressed = onBackPressed)
-
-}
-
-@ExperimentalFoundationApi
-@ExperimentalPagerApi
-@Composable
-fun ProductDetailBody(
-    state: ProductDetailUiModel,
-    onBackPressed: () -> Unit
-) {
     Scaffold {
         when (state) {
             is ProductDetailUiModel.Loading -> LoadingScreen()
             is ProductDetailUiModel.ProductDetail -> {
+                val productState = state as ProductDetailUiModel.ProductDetail
                 val pagerState = rememberPagerState(
-                    pageCount = state.productDetailModel.productsCategory.size,
+                    pageCount = productState.productDetailModel.productsCategory.size,
                     initialOffscreenLimit = 2
                 )
                 LazyColumn(
@@ -74,17 +64,19 @@ fun ProductDetailBody(
                     }
                     item {
                         DetailBody(
-                            products = state.productDetailModel.productsCategory,
-                            complements = state.productDetailModel.complements,
+                            products = productState.productDetailModel.productsCategory,
+                            complements = productState.productDetailModel.complements,
                             pagerState = pagerState
                         )
                     }
                 }
             }
-            is ProductDetailUiModel.Error -> ErrorScreen(exception = state.exception)
+            is ProductDetailUiModel.Error -> ErrorScreen(exception = (state as ProductDetailUiModel.Error).exception)
         }
     }
+
 }
+
 
 @Composable
 private fun DetailAppBar(onBackPressed: () -> Unit) {
@@ -215,7 +207,7 @@ fun DetailBody(
                 cells = GridCells.Fixed(2)
             ) {
                 items(complements) { complement ->
-                    GuaCheckBox(
+                    ComplementCheckBox(
                         product = complement,
                         onClick = {
 
@@ -229,6 +221,7 @@ fun DetailBody(
             onClick = {
 
             },
+            modifier = Modifier.height(64.dp),
             content = {
                 Row(Modifier) {
                     Text(text = stringResource(R.string.add_to_cart))
