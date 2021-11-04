@@ -23,6 +23,10 @@ class HomeViewModel @Inject constructor(
     val state: StateFlow<HomeUiModel>
         get() = _state
 
+    init {
+        getGuajolotas()
+    }
+
     fun getDrinks() {
         emitHomeViewState(HomeUiModel.Loading)
         viewModelScope.launch(coroutineDispatchers.io) {

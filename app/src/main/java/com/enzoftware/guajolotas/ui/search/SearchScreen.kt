@@ -69,6 +69,7 @@ fun SearchProductsResult(products: List<Product>) {
 @Composable
 fun SearchTopBar(viewModel: SearchViewModel) {
     var text by remember { mutableStateOf("") }
+
     Row(verticalAlignment = Alignment.CenterVertically) {
         TextField(
             value = text,

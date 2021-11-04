@@ -31,10 +31,13 @@ fun ShoppingCartBadge(
             val productsLength = (state as ShoppingCartUiModel.ShoppingCartSuccess).products.size
             BadgeBox(
                 badgeContent = {
-                    Text(
-                        text = productsLength.toString(),
-                        fontSize = 16.sp
-                    )
+                    if (productsLength > 0)
+                        Text(
+                            text = productsLength.toString(),
+                            fontSize = 16.sp
+                        )
+                    else
+                        Box {}
                 },
                 backgroundColor = AppColors.primary,
             ) {

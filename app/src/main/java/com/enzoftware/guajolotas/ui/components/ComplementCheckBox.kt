@@ -21,7 +21,7 @@ import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.ui.theme.AppColors
 
 @Composable
-fun ComplementCheckBox(product: Product, onClick: () -> Unit) {
+fun ComplementCheckBox(product: Product, onClick: (isChecked: Boolean) -> Unit) {
     val checkedState = remember { mutableStateOf(false) }
     Card(
         shape = RoundedCornerShape(20.dp),
@@ -30,7 +30,7 @@ fun ComplementCheckBox(product: Product, onClick: () -> Unit) {
             .padding(8.dp)
             .clickable {
                 checkedState.value = !checkedState.value
-                onClick()
+                onClick(checkedState.value)
             }) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row {

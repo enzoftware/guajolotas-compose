@@ -106,18 +106,16 @@ fun DetailBody(
     pagerState: PagerState
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val currentProduct = remember { mutableStateOf(products[pagerState.currentPage]) }
+    val price = remember { mutableStateOf(0.0) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
-        val currentProduct = products[pagerState.currentPage]
-        val currentQuantity = remember {
-            mutableStateOf(currentProduct.quantity)
-        }
-
         HorizontalPager(
-            state = pagerState, modifier = Modifier
+            state = pagerState,
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp),
             itemSpacing = 8.dp
@@ -147,16 +145,13 @@ fun DetailBody(
         Spacer(modifier = Modifier.height(16.dp))
         ProductCounter(
             decreaseProductCount = {
-                currentProduct.decreaseQuantity()
-                currentQuantity.value -= 1
+                currentProduct.value.decreaseQuantity()
             },
             incrementProductCount = {
-                currentProduct.increaseQuantity()
-                currentQuantity.value += 1
+                currentProduct.value.increaseQuantity()
             },
-            count = products[pagerState.currentPage].quantity
+            count = currentProduct.value.quantity
         )
-
         Text(
             text = stringResource(R.string.flavor),
             fontSize = 24.sp,
@@ -209,8 +204,9 @@ fun DetailBody(
                 items(complements) { complement ->
                     ComplementCheckBox(
                         product = complement,
-                        onClick = {
-
+                        onClick = { isChecked ->
+                            if (isChecked) price.value += complement.price
+                            else price.value -= complement.price
                         },
                     )
                 }
@@ -226,7 +222,7 @@ fun DetailBody(
                 Row(Modifier) {
                     Text(text = stringResource(R.string.add_to_cart))
                     Spacer(modifier = Modifier.width(48.dp))
-                    Text(text = "$12.00")
+                    Text(text = "$${price.value}")
                 }
             },
         )
