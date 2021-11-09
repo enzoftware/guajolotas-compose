@@ -45,7 +45,7 @@ fun ProductDetailScreen(
     val state by viewModel.state.collectAsState()
     viewModel.getProductDetail(productId)
 
-    Scaffold {
+    Scaffold(topBar = { DetailAppBar(onBackPressed) }) {
         when (state) {
             is ProductDetailUiModel.Loading -> LoadingScreen()
             is ProductDetailUiModel.ProductDetail -> {
@@ -59,9 +59,6 @@ fun ProductDetailScreen(
                         .fillMaxSize()
                         .padding(24.dp)
                 ) {
-                    item {
-                        DetailAppBar(onBackPressed)
-                    }
                     item {
                         DetailBody(
                             products = productState.productDetailModel.productsCategory,
@@ -82,7 +79,9 @@ fun ProductDetailScreen(
 private fun DetailAppBar(onBackPressed: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(

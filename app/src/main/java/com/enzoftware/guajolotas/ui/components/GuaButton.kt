@@ -16,7 +16,7 @@ import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 @Composable
 fun GuaButton(content: ComposableFun, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Button(
-        onClick = { onClick.invoke() },
+        onClick = { onClick() },
         modifier = modifier,
         shape = RoundedCornerShape(40.dp),
     ) {
