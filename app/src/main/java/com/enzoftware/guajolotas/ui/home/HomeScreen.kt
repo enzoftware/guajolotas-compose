@@ -41,7 +41,7 @@ fun HomeScreen(
         TabItem(stringResource(R.string.tamales)) { viewModel.getTamales() }
     )
 
-    val pagerState = rememberPagerState(pageCount = tabs.size)
+    val pagerState = rememberPagerState()
 
     GuajolotasTheme {
         Column(

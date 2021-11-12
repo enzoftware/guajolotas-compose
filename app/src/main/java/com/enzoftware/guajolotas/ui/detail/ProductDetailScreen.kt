@@ -29,11 +29,13 @@ import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
+@InternalCoroutinesApi
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Composable
@@ -50,10 +52,7 @@ fun ProductDetailScreen(
             is ProductDetailUiModel.Loading -> LoadingScreen()
             is ProductDetailUiModel.ProductDetail -> {
                 val productState = state as ProductDetailUiModel.ProductDetail
-                val pagerState = rememberPagerState(
-                    pageCount = productState.productDetailModel.productsCategory.size,
-                    initialOffscreenLimit = 2
-                )
+
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -63,7 +62,7 @@ fun ProductDetailScreen(
                         DetailBody(
                             products = productState.productDetailModel.productsCategory,
                             complements = productState.productDetailModel.complements,
-                            pagerState = pagerState
+                            initialPage = productState.productDetailModel.selectedProductIndex
                         )
                     }
                 }
@@ -96,17 +95,27 @@ private fun DetailAppBar(onBackPressed: () -> Unit) {
     }
 }
 
+@InternalCoroutinesApi
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Composable
 fun DetailBody(
     products: List<Product>,
     complements: List<Product> = emptyList(),
-    pagerState: PagerState
+    initialPage: Int,
 ) {
+
+    val pagerState = rememberPagerState(initialPage = initialPage)
+
     val coroutineScope = rememberCoroutineScope()
     val currentProduct = remember { mutableStateOf(products[pagerState.currentPage]) }
-    val price = remember { mutableStateOf(0.0) }
+    val addedPrice = remember { mutableStateOf(0.0) }
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect {
+            currentProduct.value = products[pagerState.currentPage]
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -114,12 +123,10 @@ fun DetailBody(
     ) {
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp),
-            itemSpacing = 8.dp
-        ) { index ->
-            val product = products[index]
+            modifier = Modifier.fillMaxWidth(),
+            count = products.size,
+        ) { page ->
+            val product = products[page]
             Column(
                 modifier = Modifier.padding(start = 24.dp, top = 16.dp, end = 24.dp),
                 verticalArrangement = Arrangement.Center,
@@ -204,8 +211,8 @@ fun DetailBody(
                     ComplementCheckBox(
                         product = complement,
                         onClick = { isChecked ->
-                            if (isChecked) price.value += complement.price
-                            else price.value -= complement.price
+                            if (isChecked) addedPrice.value += complement.price
+                            else addedPrice.value -= complement.price
                         },
                     )
                 }
@@ -218,10 +225,10 @@ fun DetailBody(
             },
             modifier = Modifier.height(64.dp),
             content = {
-                Row(Modifier) {
+                Row {
                     Text(text = stringResource(R.string.add_to_cart))
                     Spacer(modifier = Modifier.width(48.dp))
-                    Text(text = "$${price.value}")
+                    Text(text = "$${addedPrice.value + currentProduct.value.price}")
                 }
             },
         )
@@ -229,6 +236,7 @@ fun DetailBody(
 }
 
 
+@OptIn(InternalCoroutinesApi::class)
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Preview

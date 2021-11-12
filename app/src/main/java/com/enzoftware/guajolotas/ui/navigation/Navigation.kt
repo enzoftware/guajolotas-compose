@@ -14,7 +14,9 @@ import com.enzoftware.guajolotas.ui.search.SearchScreen
 import com.enzoftware.guajolotas.ui.shopping.ShoppingCartScreen
 import com.enzoftware.guajolotas.ui.splash.SplashScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@OptIn(InternalCoroutinesApi::class)
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Composable
