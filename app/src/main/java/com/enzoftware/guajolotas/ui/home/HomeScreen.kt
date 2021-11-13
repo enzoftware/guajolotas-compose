@@ -24,7 +24,6 @@ import com.enzoftware.guajolotas.ui.components.GuajolotaLogo
 import com.enzoftware.guajolotas.ui.components.ShoppingCartBadge
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.rememberPagerState
 
 @ExperimentalPagerApi
 @Composable
@@ -41,7 +40,7 @@ fun HomeScreen(
         TabItem(stringResource(R.string.tamales)) { viewModel.getTamales() }
     )
 
-    val pagerState = rememberPagerState()
+
 
     GuajolotasTheme {
         Column(
@@ -55,7 +54,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(32.dp))
             SearchBar(onClickSearch)
             Spacer(modifier = Modifier.height(32.dp))
-            TabBar(tabs = tabs, pagerState = pagerState)
+            TabBar(tabs = tabs)
             TabsContent(onClick = onClickProduct)
         }
     }

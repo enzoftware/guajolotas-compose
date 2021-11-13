@@ -9,9 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.domain.models.Product
@@ -19,22 +17,19 @@ import com.enzoftware.guajolotas.ui.GoToProductDetail
 import com.enzoftware.guajolotas.ui.components.ErrorScreen
 import com.enzoftware.guajolotas.ui.components.LoadingScreen
 import com.enzoftware.guajolotas.ui.components.ProductItem
-import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
-import kotlinx.coroutines.launch
+import com.google.accompanist.pager.rememberPagerState
 
 data class TabItem(val title: String, val onItemSelected: () -> Unit)
 
 @ExperimentalPagerApi
 @Composable
-fun TabBar(tabs: List<TabItem>, pagerState: PagerState) {
-    val scope = rememberCoroutineScope()
+fun TabBar(tabs: List<TabItem>) {
+    val pagerState = rememberPagerState()
+
     TabRow(
         selectedTabIndex = pagerState.currentPage,
-        backgroundColor = colorResource(id = android.R.color.transparent),
-        contentColor = AppColors.primary,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
@@ -43,14 +38,9 @@ fun TabBar(tabs: List<TabItem>, pagerState: PagerState) {
     ) {
         tabs.forEachIndexed { index, tab ->
             Tab(
-                text = { Text(tab.title, fontSize = 16.sp) },
                 selected = pagerState.currentPage == index,
-                onClick = {
-                    tab.onItemSelected()
-                    scope.launch {
-                        pagerState.animateScrollToPage(index)
-                    }
-                },
+                onClick = tab.onItemSelected,
+                text = { Text(tab.title, fontSize = 16.sp) },
             )
         }
     }

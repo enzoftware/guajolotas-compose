@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,6 +30,7 @@ import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -113,24 +115,34 @@ fun DetailBody(
 
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect {
-            currentProduct.value = products[pagerState.currentPage]
+            currentProduct.value = products[it]
         }
     }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth()
     ) {
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.fillMaxWidth(),
             count = products.size,
+            contentPadding = PaddingValues(horizontal = 48.dp),
+            modifier = Modifier.fillMaxSize()
         ) { page ->
             val product = products[page]
             Column(
-                modifier = Modifier.padding(start = 24.dp, top = 16.dp, end = 24.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .offset {
+                        // Calculate the offset for the current page from the
+                        // scroll position
+                        val pageOffset =
+                            this@HorizontalPager.calculateCurrentOffsetForPage(page)
+                        // Then use it as a multiplier to apply an offset
+                        IntOffset(
+                            x = (36.dp * pageOffset).roundToPx(),
+                            y = 0
+                        )
+                    }
             ) {
                 Image(
                     painter = painterResource(id = product.image),
