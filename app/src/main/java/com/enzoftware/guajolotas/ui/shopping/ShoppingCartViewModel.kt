@@ -31,7 +31,8 @@ class ShoppingCartViewModel @Inject constructor(
             val cartProductsFlow = getShoppingCartUseCase.getShoppingCart()
             try {
                 cartProductsFlow.collect { products ->
-                    emitShoppingCartUiModel(ShoppingCartUiModel.ShoppingCartSuccess(products))
+                    if (products.isEmpty()) emitShoppingCartUiModel(ShoppingCartUiModel.Empty)
+                    else emitShoppingCartUiModel(ShoppingCartUiModel.ShoppingCartSuccess(products))
                 }
             } catch (e: Exception) {
                 emitShoppingCartUiModel(ShoppingCartUiModel.Error(e))

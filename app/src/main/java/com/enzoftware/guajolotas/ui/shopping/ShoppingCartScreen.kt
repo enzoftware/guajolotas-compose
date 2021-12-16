@@ -23,6 +23,7 @@ import com.enzoftware.guajolotas.ui.components.ErrorScreen
 import com.enzoftware.guajolotas.ui.components.GuaButton
 import com.enzoftware.guajolotas.ui.components.LoadingScreen
 import com.enzoftware.guajolotas.ui.components.ProductItem
+import com.enzoftware.guajolotas.ui.search.SearchEmptyScreen
 import kotlin.random.Random
 
 @Composable
@@ -35,7 +36,13 @@ fun ShoppingCartScreen(shoppingCartViewModel: ShoppingCartViewModel = hiltViewMo
     Scaffold {
         when (state) {
             is ShoppingCartUiModel.Loading -> LoadingScreen()
-            is ShoppingCartUiModel.ShoppingCartSuccess -> Column(modifier = Modifier.padding(16.dp).fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,) {
+            is ShoppingCartUiModel.Empty -> SearchEmptyScreen()
+            is ShoppingCartUiModel.ShoppingCartSuccess -> Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
                 val products = (state as ShoppingCartUiModel.ShoppingCartSuccess).products
                 Text(
                     text = stringResource(R.string.shopping_cart),

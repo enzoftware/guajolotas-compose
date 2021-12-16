@@ -27,17 +27,19 @@ fun ShoppingCartBadge(
 
     when (state) {
         is ShoppingCartUiModel.Loading -> CircularProgressIndicator()
+        is ShoppingCartUiModel.Empty,
         is ShoppingCartUiModel.ShoppingCartSuccess -> {
-            val productsLength = (state as ShoppingCartUiModel.ShoppingCartSuccess).products.size
             BadgeBox(
                 badgeContent = {
-                    if (productsLength > 0)
+                    if (state is ShoppingCartUiModel.Empty)
+                        Box {}
+                    else {
+                        val size = (state as ShoppingCartUiModel.ShoppingCartSuccess).products.size
                         Text(
-                            text = productsLength.toString(),
+                            text = size.toString(),
                             fontSize = 16.sp
                         )
-                    else
-                        Box {}
+                    }
                 },
                 backgroundColor = AppColors.primary,
             ) {
