@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -37,19 +38,21 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
+@ExperimentalMaterialApi
 @InternalCoroutinesApi
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Composable
 fun ProductDetailScreen(
     onBackPressed: () -> Unit,
+    onClickShoppingCart: () -> Unit,
     productId: String,
     viewModel: ProductDetailViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
     viewModel.getProductDetail(productId)
 
-    Scaffold(topBar = { DetailAppBar(onBackPressed) }) {
+    Scaffold(topBar = { DetailAppBar(onBackPressed, onClickShoppingCart) }) {
         when (state) {
             is ProductDetailUiModel.Loading -> LoadingScreen()
             is ProductDetailUiModel.ProductDetail -> {
@@ -76,8 +79,9 @@ fun ProductDetailScreen(
 }
 
 
+@ExperimentalMaterialApi
 @Composable
-private fun DetailAppBar(onBackPressed: () -> Unit) {
+private fun DetailAppBar(onBackPressed: () -> Unit, onClickShoppingCart: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -90,10 +94,7 @@ private fun DetailAppBar(onBackPressed: () -> Unit) {
             contentDescription = "Go back arrow",
             Modifier.clickable { onBackPressed() }
         )
-        Icon(
-            painter = painterResource(id = R.drawable.shopping_cart),
-            contentDescription = "Go to shopping cart"
-        )
+        ShoppingCartBadge(onClick = onClickShoppingCart)
     }
 }
 
@@ -248,13 +249,14 @@ fun DetailBody(
 }
 
 
-@OptIn(InternalCoroutinesApi::class)
+@ExperimentalMaterialApi
+@InternalCoroutinesApi
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Preview
 @Composable
 fun DetailScreenPreview() {
     GuajolotasTheme {
-        ProductDetailScreen(onBackPressed = {}, "2")
+        ProductDetailScreen(onBackPressed = {}, onClickShoppingCart = {}, "2")
     }
 }

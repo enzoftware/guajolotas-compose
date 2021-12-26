@@ -1,6 +1,7 @@
 package com.enzoftware.guajolotas.ui.navigation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,7 +17,8 @@ import com.enzoftware.guajolotas.ui.splash.SplashScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
-@OptIn(InternalCoroutinesApi::class)
+@InternalCoroutinesApi
+@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @Composable
@@ -46,12 +48,13 @@ fun Navigation() {
         ) {
             ProductDetailScreen(
                 onBackPressed = { navController.popBackStack() },
-                productId = it.arguments?.getString(NavigationScreens.PRODUCT_ID) ?: "empty"
+                onClickShoppingCart = { navController.navigate(NavigationScreens.SHOPPING_CART) },
+                productId = it.arguments?.getString(PRODUCT_ID) ?: "empty"
             )
         }
         composable(
             route = NavigationScreens.SHOPPING_CART
-        ){
+        ) {
             ShoppingCartScreen()
         }
     }
