@@ -113,10 +113,12 @@ fun DetailBody(
     val coroutineScope = rememberCoroutineScope()
     val currentProduct = remember { mutableStateOf(products[pagerState.currentPage]) }
     val addedPrice = remember { mutableStateOf(0.0) }
+    val currentQuantity = remember { mutableStateOf(0) }
 
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect {
             currentProduct.value = products[it]
+            currentQuantity.value = currentProduct.value.quantity
         }
     }
 
@@ -129,7 +131,6 @@ fun DetailBody(
             contentPadding = PaddingValues(horizontal = 48.dp),
             modifier = Modifier.fillMaxSize()
         ) { page ->
-            val product = products[page]
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -145,6 +146,7 @@ fun DetailBody(
                         )
                     }
             ) {
+                val product = products[page]
                 Image(
                     painter = painterResource(id = product.image),
                     contentDescription = "Product image",
@@ -165,11 +167,13 @@ fun DetailBody(
         ProductCounter(
             decreaseProductCount = {
                 currentProduct.value.decreaseQuantity()
+                currentQuantity.value = currentProduct.value.quantity
             },
             incrementProductCount = {
                 currentProduct.value.increaseQuantity()
+                currentQuantity.value = currentProduct.value.quantity
             },
-            count = currentProduct.value.quantity
+            count = currentQuantity.value
         )
         Text(
             text = stringResource(R.string.flavor),
@@ -234,14 +238,14 @@ fun DetailBody(
         Spacer(modifier = Modifier.height(8.dp))
         GuaButton(
             onClick = {
-
+                // TODO: Send products to shopping cart
             },
             modifier = Modifier.height(64.dp),
             content = {
                 Row {
                     Text(text = stringResource(R.string.add_to_cart))
                     Spacer(modifier = Modifier.width(48.dp))
-                    Text(text = "$${addedPrice.value + currentProduct.value.price}")
+                    Text(text = "$${addedPrice.value + (currentProduct.value.price * currentProduct.value.quantity)}")
                 }
             },
         )
