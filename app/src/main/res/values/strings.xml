@@ -13,4 +13,5 @@
     <string name="detail_screen_choose_complement">Selecciona la bebida que más te guste y disfruta de tu desayuno.</string>
     <string name="add_to_cart">Agregar 1 al carrito</string>
     <string name="shopping_cart">Carrito</string>
+    <string name="add_product_to_shopping_cart">Agregar producto al carrito</string>
 </resources>

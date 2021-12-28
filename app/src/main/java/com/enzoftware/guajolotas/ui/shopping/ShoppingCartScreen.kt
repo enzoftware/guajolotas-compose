@@ -59,7 +59,7 @@ fun ShoppingCartScreen(shoppingCartViewModel: ShoppingCartViewModel = hiltViewMo
                     }
                 }
                 GuaButton(
-                    content = { Text(text = "Agregar producto al carrito") },
+                    content = { Text(text = stringResource(R.string.add_product_to_shopping_cart)) },
                     modifier = Modifier
                         .height(64.dp)
                         .fillMaxWidth()
