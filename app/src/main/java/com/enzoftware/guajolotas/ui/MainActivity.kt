@@ -4,12 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import com.enzoftware.guajolotas.ui.navigation.Navigation
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
+@ExperimentalMaterialApi
 @AndroidEntryPoint
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
