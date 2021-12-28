@@ -29,7 +29,7 @@ data class Product(
     }
 
     fun decreaseQuantity() {
-        this.quantity -= 1
+        if (this.quantity > 0) this.quantity -= 1
     }
 
     override fun toString(): String {
