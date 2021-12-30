@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,7 +34,8 @@ fun ShoppingCartScreen(shoppingCartViewModel: ShoppingCartViewModel = hiltViewMo
 
     shoppingCartViewModel.getShoppingCartProducts()
 
-    Scaffold {
+    Scaffold(topBar = { TopAppBar { Text("Carrito") } }) {
+
         when (state) {
             is ShoppingCartUiModel.Loading -> LoadingScreen()
             is ShoppingCartUiModel.Empty -> SearchEmptyScreen()

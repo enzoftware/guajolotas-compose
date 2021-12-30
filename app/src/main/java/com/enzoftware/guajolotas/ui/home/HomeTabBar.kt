@@ -17,6 +17,7 @@ import com.enzoftware.guajolotas.ui.GoToProductDetail
 import com.enzoftware.guajolotas.ui.components.ErrorScreen
 import com.enzoftware.guajolotas.ui.components.LoadingScreen
 import com.enzoftware.guajolotas.ui.components.ProductItem
+import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
@@ -40,7 +41,7 @@ fun TabBar(tabs: List<TabItem>) {
             Tab(
                 selected = pagerState.currentPage == index,
                 onClick = tab.onItemSelected,
-                text = { Text(tab.title, fontSize = 16.sp) },
+                text = { Text(tab.title, fontSize = 16.sp, color = AppColors.primary) },
             )
         }
     }

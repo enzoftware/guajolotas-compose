@@ -29,19 +29,19 @@ fun ShoppingCartBadge(
         is ShoppingCartUiModel.Loading -> CircularProgressIndicator()
         is ShoppingCartUiModel.Empty,
         is ShoppingCartUiModel.ShoppingCartSuccess -> {
-            BadgeBox(
-                badgeContent = {
+            BadgedBox(
+                badge = {
                     if (state is ShoppingCartUiModel.Empty)
                         Box {}
                     else {
                         val size = (state as ShoppingCartUiModel.ShoppingCartSuccess).products.size
                         Text(
                             text = size.toString(),
-                            fontSize = 16.sp
+                            fontSize = 16.sp,
+                            color = AppColors.primary,
                         )
                     }
-                },
-                backgroundColor = AppColors.primary,
+                }
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.shopping_cart),
