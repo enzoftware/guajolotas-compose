@@ -39,7 +39,14 @@ fun Navigation() {
                 }
             )
         }
-        composable(route = NavigationScreens.SEARCH) { SearchScreen() }
+        composable(route = NavigationScreens.SEARCH) {
+            SearchScreen(
+                goToProductDetail = { id: String ->
+                    navController.navigate(NavigationScreens.DETAIL + "/$id")
+                },
+                onCancelSearch = { navController.popBackStack() }
+            )
+        }
         composable(
             route = NavigationScreens.DETAIL + "/{$PRODUCT_ID}",
             arguments = listOf(navArgument(PRODUCT_ID) {

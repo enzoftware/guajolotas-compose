@@ -1,6 +1,7 @@
 package com.enzoftware.guajolotas.ui.search
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.R
 import com.enzoftware.guajolotas.domain.models.Product
+import com.enzoftware.guajolotas.ui.GoToProductDetail
 import com.enzoftware.guajolotas.ui.components.ErrorScreen
 import com.enzoftware.guajolotas.ui.components.LoadingScreen
 import com.enzoftware.guajolotas.ui.components.ProductItem
@@ -29,8 +31,11 @@ import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
-
+fun SearchScreen(
+    viewModel: SearchViewModel = hiltViewModel(),
+    goToProductDetail: GoToProductDetail,
+    onCancelSearch: () -> Unit
+) {
     val state by viewModel.state.observeAsState()
 
     Scaffold {
@@ -39,12 +44,15 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
                 .padding(horizontal = 24.dp, vertical = 40.dp)
                 .fillMaxSize()
         ) {
-            SearchTopBar(viewModel)
+            SearchTopBar(viewModel, onCancelSearch = onCancelSearch)
             Spacer(modifier = Modifier.height(16.dp))
             when (state) {
                 is SearchViewState.Initial -> SearchInitialScreen()
                 is SearchViewState.Loading -> LoadingScreen()
-                is SearchViewState.Success -> SearchProductsResult((state as SearchViewState.Success).products)
+                is SearchViewState.Success -> {
+                    val products = (state as SearchViewState.Success).products
+                    SearchProductsResult(products = products, goToProductDetail = goToProductDetail)
+                }
                 is SearchViewState.Error -> ErrorScreen((state as SearchViewState.Error).exception)
             }
         }
@@ -52,12 +60,12 @@ fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun SearchProductsResult(products: List<Product>) {
+fun SearchProductsResult(products: List<Product>, goToProductDetail: GoToProductDetail) {
     if (products.isNotEmpty()) {
         LazyColumn {
             items(products) { product ->
                 ProductItem(product = product) {
-
+                    goToProductDetail(product.id)
                 }
             }
         }
@@ -67,7 +75,7 @@ fun SearchProductsResult(products: List<Product>) {
 }
 
 @Composable
-fun SearchTopBar(viewModel: SearchViewModel) {
+fun SearchTopBar(viewModel: SearchViewModel, onCancelSearch: () -> Unit) {
     var text by remember { mutableStateOf("") }
 
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -95,6 +103,7 @@ fun SearchTopBar(viewModel: SearchViewModel) {
             modifier = Modifier
                 .weight(4f)
                 .padding(start = 20.dp)
+                .clickable { onCancelSearch() }
         )
     }
 }
@@ -116,7 +125,11 @@ fun SearchInitialScreen() {
                 .height(120.dp)
         )
         Spacer(modifier = Modifier.height(24.dp))
-        Text(text = "Realiza una búsqueda", fontSize = 16.sp, fontWeight = FontWeight.W600)
+        Text(
+            text = stringResource(R.string.search_text),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.W600
+        )
     }
 }
 
@@ -147,6 +160,6 @@ fun SearchEmptyScreen() {
 @Composable
 fun SearchTopBarPreview() {
     GuajolotasTheme {
-        SearchScreen()
+        SearchScreen(goToProductDetail = {}, onCancelSearch = {})
     }
 }
