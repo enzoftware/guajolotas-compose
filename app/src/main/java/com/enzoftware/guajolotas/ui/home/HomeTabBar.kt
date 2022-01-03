@@ -9,8 +9,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.ui.GoToProductDetail
@@ -19,15 +20,17 @@ import com.enzoftware.guajolotas.ui.components.LoadingScreen
 import com.enzoftware.guajolotas.ui.components.ProductItem
 import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.launch
 
 data class TabItem(val title: String, val onItemSelected: () -> Unit)
 
 @ExperimentalPagerApi
 @Composable
-fun TabBar(tabs: List<TabItem>) {
-    val pagerState = rememberPagerState()
+fun TabBar(tabs: List<TabItem>, pagerState: PagerState) {
+    val coroutineScope = rememberCoroutineScope()
 
     TabRow(
         selectedTabIndex = pagerState.currentPage,
@@ -36,12 +39,19 @@ fun TabBar(tabs: List<TabItem>) {
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
             )
         },
+        backgroundColor = Color.Transparent,
+        contentColor = AppColors.primary
     ) {
         tabs.forEachIndexed { index, tab ->
             Tab(
+                text = { Text(tab.title) },
                 selected = pagerState.currentPage == index,
-                onClick = tab.onItemSelected,
-                text = { Text(tab.title, fontSize = 16.sp, color = AppColors.primary) },
+                onClick = {
+                    tab.onItemSelected()
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(index)
+                    }
+                }
             )
         }
     }
@@ -51,19 +61,25 @@ fun TabBar(tabs: List<TabItem>) {
 @Composable
 fun TabsContent(
     homeViewModel: HomeViewModel = hiltViewModel(),
-    onClick: GoToProductDetail
+    onClick: GoToProductDetail,
+    pagerState: PagerState,
+    tabs: List<TabItem>
 ) {
     val state by homeViewModel.state.collectAsState()
 
-    when (state) {
-        is HomeUiModel.Loading -> LoadingScreen()
-        is HomeUiModel.ProductsSuccess -> ProductsSuccessFragment(
-            products = (state as HomeUiModel.ProductsSuccess).products,
-            onClickProduct = onClick,
-        )
-        is HomeUiModel.Error -> ErrorScreen(exception = (state as HomeUiModel.Error).exception)
+    HorizontalPager(
+        count = tabs.size,
+        state = pagerState,
+    ) {
+        when (state) {
+            is HomeUiModel.Loading -> LoadingScreen()
+            is HomeUiModel.ProductsSuccess -> ProductsSuccessFragment(
+                products = (state as HomeUiModel.ProductsSuccess).products,
+                onClickProduct = onClick,
+            )
+            is HomeUiModel.Error -> ErrorScreen(exception = (state as HomeUiModel.Error).exception)
+        }
     }
-
 }
 
 @Composable
