@@ -1,32 +1,22 @@
 package com.enzoftware.guajolotas.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import com.enzoftware.guajolotas.ui.ComposableFun
 
-private val DarkColorPalette = darkColors(
-    primary = AppColors.primary,
-    background = AppColors.background,
-    surface = AppColors.background,
-)
 
-private val LightColorPalette = lightColors(
+private val colors = lightColors(
     primary = AppColors.primary,
-    background = AppColors.background,
-    surface = AppColors.background,
+    secondary = Color.Green,
+    onError = Color.Red,
+    background = AppColors.background
+
 )
 
 @Composable
-fun GuajolotasTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: ComposableFun) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
-
+fun GuajolotasTheme(content: ComposableFun) {
     MaterialTheme(
         colors = colors,
         typography = Typography,
