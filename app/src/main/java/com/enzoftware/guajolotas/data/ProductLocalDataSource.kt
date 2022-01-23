@@ -25,7 +25,6 @@ class ProductLocalDataSource @Inject constructor(private val productDao: Product
         return ResultState.Success(response!!)
     }
 
-
     suspend fun searchProduct(name: String): ResultState<List<Product>> {
         delay(DELAY_TIME)
         val locale = Locale.getDefault()
@@ -43,6 +42,10 @@ class ProductLocalDataSource @Inject constructor(private val productDao: Product
 
     fun addProductToShoppingCart(product: Product) {
         productDao.addProduct(product.toEntity())
+    }
+
+    fun removeProductFromShoppingCart(product: Product) {
+        productDao.removeProduct(product.toEntity())
     }
 
     companion object {
