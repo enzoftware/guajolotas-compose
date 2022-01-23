@@ -74,13 +74,13 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-animation:0.16.0"
 
     // Room
-    def room_version = "2.4.0"
+    def room_version = "2.4.1"
 
     implementation "androidx.room:room-ktx:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     // Livedata
-    implementation 'androidx.compose.runtime:runtime-livedata:1.1.0-rc01'
+    implementation 'androidx.compose.runtime:runtime-livedata:1.2.0-alpha01'
 
     // Accompanist
     implementation "com.google.accompanist:accompanist-pager:0.22.0-rc"
@@ -102,9 +102,33 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:1.0.0"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-rc01'
 
+    // Testing
+    testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+
+    //For runBlockingTest, CoroutineDispatcher etc.
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0"
+    //For InstantTaskExecutorRule
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+
+    // For Robolectric tests.
+    testImplementation 'com.google.dagger:hilt-android-testing:2.38.1'
+    // ...with Kotlin.
+    kaptTest 'com.google.dagger:hilt-android-compiler:2.38.1'
+
+
+    // For instrumented tests.
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.38.1'
+    // ...with Kotlin.
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.38.1'
+
+    // Test rules and transitive dependencies:
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
+    // Needed for createComposeRule, but not createAndroidComposeRule:
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
 }
