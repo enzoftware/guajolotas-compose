@@ -1,6 +1,7 @@
 package com.enzoftware.guajolotas.domain.models
 
 import androidx.annotation.DrawableRes
+import com.enzoftware.guajolotas.R
 import com.enzoftware.guajolotas.data.local.ProductEntity
 
 enum class ProductType {
@@ -15,9 +16,9 @@ data class Product(
     val price: Double,
     var quantity: Int = 0,
     @DrawableRes
-    val image: Int,
+    val image: Int = R.drawable.champurrado,
     @DrawableRes
-    val flavorImage: Int,
+    val flavorImage: Int = R.drawable.flavor_coffee,
     val type: ProductType,
 ) {
 
