@@ -18,6 +18,6 @@ class ShoppingCartRepositoryImpl @Inject constructor(private val productLocalDat
     }
 
     override suspend fun removeProductFromShoppingList(product: Product) {
-        val entity = product.toEntity()
+        productLocalDataSource.removeProductFromShoppingCart(product)
     }
 }
