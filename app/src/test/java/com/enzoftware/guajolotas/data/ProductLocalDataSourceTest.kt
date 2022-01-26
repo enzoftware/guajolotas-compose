@@ -98,7 +98,7 @@ class ProductLocalDataSourceTest {
         }
 
         val oldProductsSize = products.size
-        val result = localDataSource.removeProductFromShoppingCart(product)
+        localDataSource.removeProductFromShoppingCart(product)
 
         verify(productDao).removeProduct(product.toEntity())
         assertEquals(oldProductsSize - 1, products.size)
