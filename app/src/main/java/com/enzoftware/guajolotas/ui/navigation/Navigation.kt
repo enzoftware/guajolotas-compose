@@ -17,10 +17,10 @@ import com.enzoftware.guajolotas.ui.splash.SplashScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
+@OptIn(ExperimentalPagerApi::class)
 @InternalCoroutinesApi
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
-@ExperimentalPagerApi
 @Composable
 fun Navigation() {
     val navController = rememberNavController()

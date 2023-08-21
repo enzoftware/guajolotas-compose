@@ -42,7 +42,7 @@ object FakeProducts {
         ),
     )
 
-    val tamales = listOf<Product>(
+    val tamales = listOf(
         Product(
             "prod-5",
             "Tamal Verde",
@@ -85,7 +85,7 @@ object FakeProducts {
         ),
     )
 
-    val guajolotas = listOf<Product>(
+    val guajolotas = listOf(
         Product(
             "prod-10",
             "Verde",

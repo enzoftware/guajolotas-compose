@@ -34,7 +34,7 @@ fun ShoppingCartScreen(shoppingCartViewModel: ShoppingCartViewModel = hiltViewMo
 
     shoppingCartViewModel.getShoppingCartProducts()
 
-    Scaffold(topBar = { TopAppBar { Text("Carrito") } }) {
+    Scaffold(topBar = { TopAppBar { Text("Carrito") } }) { padding ->
 
         when (state) {
             is ShoppingCartUiModel.Loading -> LoadingScreen()

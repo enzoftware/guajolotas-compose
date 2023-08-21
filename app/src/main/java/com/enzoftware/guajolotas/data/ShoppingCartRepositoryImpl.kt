@@ -1,7 +1,6 @@
 package com.enzoftware.guajolotas.data
 
 import com.enzoftware.guajolotas.domain.models.Product
-import com.enzoftware.guajolotas.domain.models.toEntity
 import com.enzoftware.guajolotas.domain.repository.ShoppingCartRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

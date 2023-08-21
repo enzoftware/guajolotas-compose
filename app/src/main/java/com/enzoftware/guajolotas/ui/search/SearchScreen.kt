@@ -38,7 +38,7 @@ fun SearchScreen(
 ) {
     val state by viewModel.state.observeAsState()
 
-    Scaffold {
+    Scaffold { padding ->
         Column(
             modifier = Modifier
                 .padding(horizontal = 24.dp, vertical = 40.dp)
@@ -53,7 +53,9 @@ fun SearchScreen(
                     val products = (state as SearchViewState.Success).products
                     SearchProductsResult(products = products, goToProductDetail = goToProductDetail)
                 }
+
                 is SearchViewState.Error -> ErrorScreen((state as SearchViewState.Error).exception)
+                else -> Box(modifier = Modifier.height(15.dp))
             }
         }
     }
