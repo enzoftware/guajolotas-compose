@@ -4,10 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
@@ -29,19 +26,15 @@ import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.ui.components.*
 import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 
 @ExperimentalMaterialApi
 @InternalCoroutinesApi
 @ExperimentalFoundationApi
-@ExperimentalPagerApi
 @Composable
 fun ProductDetailScreen(
     onBackPressed: () -> Unit,
@@ -52,7 +45,7 @@ fun ProductDetailScreen(
     val state by viewModel.state.collectAsState()
     viewModel.getProductDetail(productId)
 
-    Scaffold(topBar = { DetailAppBar(onBackPressed, onClickShoppingCart) }) {
+    Scaffold(topBar = { DetailAppBar(onBackPressed, onClickShoppingCart) }) { padding ->
         when (state) {
             is ProductDetailUiModel.Loading -> LoadingScreen()
             is ProductDetailUiModel.ProductDetail -> {
@@ -72,6 +65,7 @@ fun ProductDetailScreen(
                     }
                 }
             }
+
             is ProductDetailUiModel.Error -> ErrorScreen(exception = (state as ProductDetailUiModel.Error).exception)
         }
     }
@@ -89,18 +83,15 @@ private fun DetailAppBar(onBackPressed: () -> Unit, onClickShoppingCart: () -> U
             .padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_baseline_arrow_back_ios),
+        Icon(painter = painterResource(id = R.drawable.ic_baseline_arrow_back_ios),
             contentDescription = "Go back arrow",
-            Modifier.clickable { onBackPressed() }
-        )
+            Modifier.clickable { onBackPressed() })
         ShoppingCartBadge(onClick = onClickShoppingCart)
     }
 }
 
 @InternalCoroutinesApi
 @ExperimentalFoundationApi
-@ExperimentalPagerApi
 @Composable
 fun DetailBody(
     products: List<Product>,
@@ -131,21 +122,15 @@ fun DetailBody(
             contentPadding = PaddingValues(horizontal = 48.dp),
             modifier = Modifier.fillMaxSize()
         ) { page ->
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .offset {
-                        // Calculate the offset for the current page from the
-                        // scroll position
-                        val pageOffset =
-                            this@HorizontalPager.calculateCurrentOffsetForPage(page)
-                        // Then use it as a multiplier to apply an offset
-                        IntOffset(
-                            x = (36.dp * pageOffset).roundToPx(),
-                            y = 0
-                        )
-                    }
-            ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.offset {
+                // Calculate the offset for the current page from the
+                // scroll position
+                val pageOffset = this@HorizontalPager.calculateCurrentOffsetForPage(page)
+                // Then use it as a multiplier to apply an offset
+                IntOffset(
+                    x = (36.dp * pageOffset).roundToPx(), y = 0
+                )
+            }) {
                 val product = products[page]
                 Image(
                     painter = painterResource(id = product.image),
@@ -164,16 +149,13 @@ fun DetailBody(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        ProductCounter(
-            decreaseProductCount = {
-                currentProduct.value.decreaseQuantity()
-                currentQuantity.value = currentProduct.value.quantity
-            },
-            incrementProductCount = {
-                currentProduct.value.increaseQuantity()
-                currentQuantity.value = currentProduct.value.quantity
-            },
-            count = currentQuantity.value
+        ProductCounter(decreaseProductCount = {
+            currentProduct.value.decreaseQuantity()
+            currentQuantity.value = currentProduct.value.quantity
+        }, incrementProductCount = {
+            currentProduct.value.increaseQuantity()
+            currentQuantity.value = currentProduct.value.quantity
+        }, count = currentQuantity.value
         )
         Text(
             text = stringResource(R.string.flavor),
@@ -189,21 +171,21 @@ fun DetailBody(
                 .height(240.dp)
                 .fillMaxWidth()
         ) {
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(3)
-            ) {
-                items(products) { product ->
-                    ProductFlavor(
-                        image = product.flavorImage,
-                        onClick = {
-                            val index = products.indexOf(product)
-                            coroutineScope.launch {
-                                pagerState.animateScrollToPage(index)
-                            }
-                        },
-                    )
-                }
-            }
+//            GridCells(
+//                cells = GridCells.Fixed(3)
+//            ) {
+//                items(products) { product ->
+//                    ProductFlavor(
+//                        image = product.flavorImage,
+//                        onClick = {
+//                            val index = products.indexOf(product)
+//                            coroutineScope.launch {
+//                                pagerState.animateScrollToPage(index)
+//                            }
+//                        },
+//                    )
+//                }
+//            }
         }
         Text(
             text = stringResource(R.string.guajolocombo),
@@ -221,19 +203,19 @@ fun DetailBody(
                 .height(320.dp)
                 .fillMaxWidth()
         ) {
-            LazyVerticalGrid(
-                cells = GridCells.Fixed(2)
-            ) {
-                items(complements) { complement ->
-                    ComplementCheckBox(
-                        product = complement,
-                        onClick = { isChecked ->
-                            if (isChecked) addedPrice.value += complement.price
-                            else addedPrice.value -= complement.price
-                        },
-                    )
-                }
-            }
+//            LazyVerticalGrid(
+//                cells = GridCells.Fixed(2)
+//            ) {
+//                items(complements) { complement ->
+//                    ComplementCheckBox(
+//                        product = complement,
+//                        onClick = { isChecked ->
+//                            if (isChecked) addedPrice.value += complement.price
+//                            else addedPrice.value -= complement.price
+//                        },
+//                    )
+//                }
+//            }
         }
         Spacer(modifier = Modifier.height(8.dp))
         GuaButton(
@@ -256,7 +238,6 @@ fun DetailBody(
 @ExperimentalMaterialApi
 @InternalCoroutinesApi
 @ExperimentalFoundationApi
-@ExperimentalPagerApi
 @Preview
 @Composable
 fun DetailScreenPreview() {

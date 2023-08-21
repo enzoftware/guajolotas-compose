@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enzoftware.guajolotas.core.CoroutineDispatchers
 import com.enzoftware.guajolotas.core.ResultState
-import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.domain.usecase.GetProductDetailUseCase
 import com.enzoftware.guajolotas.domain.usecase.ProductDetailModel
 import dagger.hilt.android.lifecycle.HiltViewModel
