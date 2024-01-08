@@ -11,7 +11,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.enzoftware.guajolotas.ui.components.GuajolotaLogo
 import com.enzoftware.guajolotas.ui.navigation.NavigationScreens
 import kotlinx.coroutines.delay
@@ -38,4 +40,11 @@ fun SplashScreen(navController: NavController) {
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         GuajolotaLogo(modifier = Modifier.scale(scale.value))
     }
+}
+
+
+@Preview
+@Composable
+fun SplashScreenPreview() {
+    SplashScreen(navController = rememberNavController())
 }
