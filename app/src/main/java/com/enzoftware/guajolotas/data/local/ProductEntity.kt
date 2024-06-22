@@ -8,7 +8,7 @@ import com.enzoftware.guajolotas.domain.models.ProductType
 
 @Entity(tableName = ProductEntity.DATABASE_NAME)
 data class ProductEntity(
-    @PrimaryKey()
+    @PrimaryKey
     val id: String,
     val name: String,
     val price: Double,

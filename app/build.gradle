@@ -133,13 +133,13 @@ dependencies {
     // For Robolectric tests.
     testImplementation 'com.google.dagger:hilt-android-testing:2.49'
     // ...with Kotlin.
-    kspTest 'com.google.dagger:hilt-android-compiler:2.44'
+    kspTest 'com.google.dagger:hilt-android-compiler:2.49'
 
 
     // For instrumented tests.
     androidTestImplementation 'com.google.dagger:hilt-android-testing:2.49'
     // ...with Kotlin.
-    kspAndroidTest 'com.google.dagger:hilt-android-compiler:2.44'
+    kspAndroidTest 'com.google.dagger:hilt-android-compiler:2.49'
 
     // Test rules and transitive dependencies:
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.8")
