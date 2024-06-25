@@ -1,12 +1,13 @@
 package com.enzoftware.guajolotas.ui.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,11 +24,9 @@ import com.enzoftware.guajolotas.ui.GoToProductDetail
 import com.enzoftware.guajolotas.ui.components.GuajolotaLogo
 import com.enzoftware.guajolotas.ui.components.ShoppingCartBadge
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.rememberPagerState
 
-@ExperimentalMaterialApi
-@ExperimentalPagerApi
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     onClickProduct: GoToProductDetail,
@@ -42,7 +41,7 @@ fun HomeScreen(
         TabItem(stringResource(R.string.tamales)) { viewModel.getTamales() }
     )
 
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { tabs.size })
 
     GuajolotasTheme {
         Column(
@@ -63,7 +62,6 @@ fun HomeScreen(
 }
 
 
-@ExperimentalMaterialApi
 @Composable
 private fun AppBar(onClickShoppingCart: () -> Unit) {
     Row(

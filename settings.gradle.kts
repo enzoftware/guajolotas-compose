@@ -6,4 +6,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Guajolotas"
-include ':app'
+include(":app")

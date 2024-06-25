@@ -5,10 +5,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,13 +27,9 @@ import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.ui.components.*
 import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
-import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.InternalCoroutinesApi
 
 
-@ExperimentalMaterialApi
 @InternalCoroutinesApi
 @ExperimentalFoundationApi
 @Composable
@@ -45,7 +42,7 @@ fun ProductDetailScreen(
     val state by viewModel.state.collectAsState()
     viewModel.getProductDetail(productId)
 
-    Scaffold(topBar = { DetailAppBar(onBackPressed, onClickShoppingCart) }) { padding ->
+    Scaffold(topBar = { DetailAppBar(onBackPressed, onClickShoppingCart) }) { _ ->
         when (state) {
             is ProductDetailUiModel.Loading -> LoadingScreen()
             is ProductDetailUiModel.ProductDetail -> {
@@ -72,8 +69,6 @@ fun ProductDetailScreen(
 
 }
 
-
-@ExperimentalMaterialApi
 @Composable
 private fun DetailAppBar(onBackPressed: () -> Unit, onClickShoppingCart: () -> Unit) {
     Row(
@@ -99,7 +94,7 @@ fun DetailBody(
     initialPage: Int,
 ) {
 
-    val pagerState = rememberPagerState(initialPage = initialPage)
+    val pagerState = rememberPagerState(initialPage = initialPage, pageCount = { products.size})
 
     val coroutineScope = rememberCoroutineScope()
     val currentProduct = remember { mutableStateOf(products[pagerState.currentPage]) }
@@ -118,14 +113,13 @@ fun DetailBody(
     ) {
         HorizontalPager(
             state = pagerState,
-            count = products.size,
             contentPadding = PaddingValues(horizontal = 48.dp),
             modifier = Modifier.fillMaxSize()
         ) { page ->
             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.offset {
                 // Calculate the offset for the current page from the
                 // scroll position
-                val pageOffset = this@HorizontalPager.calculateCurrentOffsetForPage(page)
+                val pageOffset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
                 // Then use it as a multiplier to apply an offset
                 IntOffset(
                     x = (36.dp * pageOffset).roundToPx(), y = 0
@@ -235,7 +229,6 @@ fun DetailBody(
 }
 
 
-@ExperimentalMaterialApi
 @InternalCoroutinesApi
 @ExperimentalFoundationApi
 @Preview

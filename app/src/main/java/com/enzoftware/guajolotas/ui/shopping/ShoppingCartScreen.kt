@@ -1,11 +1,14 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.enzoftware.guajolotas.ui.shopping
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -34,7 +37,7 @@ fun ShoppingCartScreen(shoppingCartViewModel: ShoppingCartViewModel = hiltViewMo
 
     shoppingCartViewModel.getShoppingCartProducts()
 
-    Scaffold(topBar = { TopAppBar { Text("Carrito") } }) { padding ->
+    Scaffold(topBar = { TopAppBar(title = { Text("Carrito") }) }) { padding ->
 
         when (state) {
             is ShoppingCartUiModel.Loading -> LoadingScreen()
