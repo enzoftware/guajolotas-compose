@@ -3,9 +3,8 @@ package com.enzoftware.guajolotas.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,15 +16,14 @@ import androidx.compose.ui.unit.sp
 import com.enzoftware.guajolotas.domain.models.Product
 import com.enzoftware.guajolotas.ui.theme.AppColors
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProductItem(product: Product, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .height(112.dp)
             .padding(8.dp),
-        shape = RoundedCornerShape(20.dp), backgroundColor = Color.White,
-        onClick = { onClick() }
+        shape = RoundedCornerShape(20.dp),
+        onClick = onClick
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

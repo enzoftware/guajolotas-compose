@@ -1,7 +1,6 @@
 package com.enzoftware.guajolotas.ui.navigation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,12 +13,9 @@ import com.enzoftware.guajolotas.ui.navigation.NavigationScreens.PRODUCT_ID
 import com.enzoftware.guajolotas.ui.search.SearchScreen
 import com.enzoftware.guajolotas.ui.shopping.ShoppingCartScreen
 import com.enzoftware.guajolotas.ui.splash.SplashScreen
-import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.InternalCoroutinesApi
 
-@OptIn(ExperimentalPagerApi::class)
 @InternalCoroutinesApi
-@ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun Navigation() {
