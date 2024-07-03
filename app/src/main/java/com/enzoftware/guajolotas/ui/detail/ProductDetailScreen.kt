@@ -133,7 +133,6 @@ fun DetailBody(
 ) {
 
     val pagerState = rememberPagerState(initialPage = initialPage, pageCount = { products.size })
-
     val coroutineScope = rememberCoroutineScope()
     val currentProduct = remember { mutableStateOf(products[pagerState.currentPage]) }
     val addedPrice = remember { mutableDoubleStateOf(0.0) }
