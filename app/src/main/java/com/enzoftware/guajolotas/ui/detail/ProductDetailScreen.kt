@@ -3,16 +3,40 @@ package com.enzoftware.guajolotas.ui.detail
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -21,13 +45,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.enzoftware.guajolotas.R
 import com.enzoftware.guajolotas.domain.models.Product
-import com.enzoftware.guajolotas.ui.components.*
+import com.enzoftware.guajolotas.ui.components.ComplementCheckBox
+import com.enzoftware.guajolotas.ui.components.ErrorScreen
+import com.enzoftware.guajolotas.ui.components.GuaButton
+import com.enzoftware.guajolotas.ui.components.LoadingScreen
+import com.enzoftware.guajolotas.ui.components.ProductCounter
+import com.enzoftware.guajolotas.ui.components.ProductFlavor
+import com.enzoftware.guajolotas.ui.components.ShoppingCartBadge
 import com.enzoftware.guajolotas.ui.theme.AppColors
 import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
 
 
 @InternalCoroutinesApi
@@ -40,9 +73,14 @@ fun ProductDetailScreen(
     viewModel: ProductDetailViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
-    viewModel.getProductDetail(productId)
+    
+    LaunchedEffect(true) {
+        viewModel.getProductDetail(productId)
+    }
 
-    Scaffold(topBar = { DetailAppBar(onBackPressed, onClickShoppingCart) }) { _ ->
+    Scaffold(
+        topBar = { DetailAppBar(onBackPressed, onClickShoppingCart) }
+    ) { padding ->
         when (state) {
             is ProductDetailUiModel.Loading -> LoadingScreen()
             is ProductDetailUiModel.ProductDetail -> {
@@ -94,12 +132,12 @@ fun DetailBody(
     initialPage: Int,
 ) {
 
-    val pagerState = rememberPagerState(initialPage = initialPage, pageCount = { products.size})
+    val pagerState = rememberPagerState(initialPage = initialPage, pageCount = { products.size })
 
     val coroutineScope = rememberCoroutineScope()
     val currentProduct = remember { mutableStateOf(products[pagerState.currentPage]) }
-    val addedPrice = remember { mutableStateOf(0.0) }
-    val currentQuantity = remember { mutableStateOf(0) }
+    val addedPrice = remember { mutableDoubleStateOf(0.0) }
+    val currentQuantity = remember { mutableIntStateOf(0) }
 
     LaunchedEffect(pagerState) {
         snapshotFlow { pagerState.currentPage }.collect {
@@ -116,15 +154,25 @@ fun DetailBody(
             contentPadding = PaddingValues(horizontal = 48.dp),
             modifier = Modifier.fillMaxSize()
         ) { page ->
-            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.offset {
-                // Calculate the offset for the current page from the
-                // scroll position
-                val pageOffset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
-                // Then use it as a multiplier to apply an offset
-                IntOffset(
-                    x = (36.dp * pageOffset).roundToPx(), y = 0
-                )
-            }) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.graphicsLayer {
+                    // Calculate the absolute offset for the current page from the
+                    // scroll position. We use the absolute value which allows us to mirror
+                    // any effects for both directions
+                    val pageOffset = (
+                            (pagerState.currentPage - page) + pagerState
+                                .currentPageOffsetFraction
+                            ).absoluteValue
+
+                    // We animate the alpha, between 50% and 100%
+                    alpha = lerp(
+                        start = 0.5f,
+                        stop = 1f,
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    )
+                }
+            ) {
                 val product = products[page]
                 Image(
                     painter = painterResource(id = product.image),
@@ -165,21 +213,20 @@ fun DetailBody(
                 .height(240.dp)
                 .fillMaxWidth()
         ) {
-//            GridCells(
-//                cells = GridCells.Fixed(3)
-//            ) {
-//                items(products) { product ->
-//                    ProductFlavor(
-//                        image = product.flavorImage,
-//                        onClick = {
-//                            val index = products.indexOf(product)
-//                            coroutineScope.launch {
-//                                pagerState.animateScrollToPage(index)
-//                            }
-//                        },
-//                    )
-//                }
-//            }
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3)
+            ) {
+                items(products.size) { index ->
+                    ProductFlavor(
+                        image = products[index].flavorImage,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        },
+                    )
+                }
+            }
         }
         Text(
             text = stringResource(R.string.guajolocombo),
@@ -197,19 +244,19 @@ fun DetailBody(
                 .height(320.dp)
                 .fillMaxWidth()
         ) {
-//            LazyVerticalGrid(
-//                cells = GridCells.Fixed(2)
-//            ) {
-//                items(complements) { complement ->
-//                    ComplementCheckBox(
-//                        product = complement,
-//                        onClick = { isChecked ->
-//                            if (isChecked) addedPrice.value += complement.price
-//                            else addedPrice.value -= complement.price
-//                        },
-//                    )
-//                }
-//            }
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2)
+            ) {
+                items(complements.size) { index ->
+                    ComplementCheckBox(
+                        product = complements[index],
+                        onClick = { isChecked ->
+                            if (isChecked) addedPrice.value += complements[index].price
+                            else addedPrice.value -= complements[index].price
+                        },
+                    )
+                }
+            }
         }
         Spacer(modifier = Modifier.height(8.dp))
         GuaButton(

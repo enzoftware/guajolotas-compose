@@ -44,7 +44,7 @@ fun SearchScreen(
 ) {
     val state by viewModel.state.observeAsState()
 
-    Scaffold { _ ->
+    Scaffold {
         Column(
             modifier = Modifier
                 .padding(horizontal = 24.dp, vertical = 40.dp)
