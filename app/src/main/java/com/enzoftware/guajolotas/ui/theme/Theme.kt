@@ -11,9 +11,10 @@ private val colors = lightColorScheme(
     primary = AppColors.primary,
     secondary = Color.Green,
     onError = Color.Red,
-    background = AppColors.background
+    background = AppColors.background,
 
-)
+
+    )
 
 @Composable
 fun GuajolotasTheme(content: ComposableFun) {

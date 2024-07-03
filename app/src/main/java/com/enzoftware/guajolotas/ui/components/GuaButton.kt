@@ -2,6 +2,7 @@ package com.enzoftware.guajolotas.ui.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -17,7 +18,7 @@ import com.enzoftware.guajolotas.ui.theme.GuajolotasTheme
 fun GuaButton(content: ComposableFun, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Button(
         onClick = { onClick() },
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(40.dp),
     ) {
         content()
@@ -29,7 +30,7 @@ fun GuaButton(content: ComposableFun, modifier: Modifier = Modifier, onClick: ()
 fun GuaButtonPreview() {
     GuajolotasTheme {
         GuaButton(onClick = {}, content = {
-            Row(Modifier) {
+            Row {
                 Text(text = "Agregar 1 al carrito")
                 Spacer(modifier = Modifier.width(48.dp))
                 Text(text = "$12.00")

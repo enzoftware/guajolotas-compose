@@ -4,9 +4,13 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,21 +46,23 @@ fun HomeScreen(
     )
 
     val pagerState = rememberPagerState(pageCount = { tabs.size })
+    val scrollState = rememberScrollState()
 
     GuajolotasTheme {
-        Column(
-            modifier = Modifier
-                .padding(24.dp)
-                .fillMaxSize()
-        ) {
-            AppBar(onClickShoppingCart = onClickCart)
-            Spacer(modifier = Modifier.height(32.dp))
-            HomeHeader()
-            Spacer(modifier = Modifier.height(32.dp))
-            SearchBar(onClickSearch)
-            Spacer(modifier = Modifier.height(32.dp))
-            TabBar(tabs = tabs, pagerState = pagerState)
-            TabsContent(onClick = onClickProduct, tabs = tabs, pagerState = pagerState)
+        Surface(modifier = Modifier.fillMaxHeight()) {
+            Column(
+                modifier = Modifier
+                    .padding(24.dp)
+            ) {
+                AppBar(onClickShoppingCart = onClickCart)
+                Spacer(modifier = Modifier.height(32.dp))
+                HomeHeader()
+                Spacer(modifier = Modifier.height(32.dp))
+                SearchBar(onClickSearch)
+                Spacer(modifier = Modifier.height(32.dp))
+                TabBar(tabs = tabs, pagerState = pagerState)
+                TabsContent(onClick = onClickProduct, tabs = tabs, pagerState = pagerState)
+            }
         }
     }
 }
