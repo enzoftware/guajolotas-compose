@@ -4,7 +4,7 @@ appcompat="1.7.0"
 composeBom="2024.06.00"
 coreTesting="2.2.0"
 espressoCore="3.5.1"
-gradle="8.4.2"
+gradle= "8.6.0"
 hiltAndroid="2.49"
 hiltAndroidCompiler="2.49"
 hiltAndroidGradlePlugin="2.49"
@@ -27,6 +27,7 @@ mockitoKotlin="4.0.0"
 roomKtx="2.6.1"
 uiTestJunit4="1.6.8"
 androidGradlePlugin = "7.4.2"
+jetbrainsKotlinJvm = "1.9.24"
 
 [libraries]
 accompanist-navigation-animation = { module = "com.google.accompanist:accompanist-navigation-animation", version.ref = "accompanistPager" }
@@ -74,3 +75,4 @@ ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }

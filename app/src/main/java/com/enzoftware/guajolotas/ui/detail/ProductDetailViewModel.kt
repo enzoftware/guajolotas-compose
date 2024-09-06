@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.enzoftware.guajolotas.core.CoroutineDispatchers
 import com.enzoftware.guajolotas.core.ResultState
+import com.enzoftware.guajolotas.domain.models.ProductDetailModel
 import com.enzoftware.guajolotas.domain.usecase.GetProductDetailUseCase
-import com.enzoftware.guajolotas.domain.usecase.ProductDetailModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductDetailViewModel @Inject constructor(
     private val getProductDetailUseCase: GetProductDetailUseCase,
-    private val coroutineDispatchers: CoroutineDispatchers
+    private val coroutineDispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<ProductDetailUiModel>(ProductDetailUiModel.Loading)

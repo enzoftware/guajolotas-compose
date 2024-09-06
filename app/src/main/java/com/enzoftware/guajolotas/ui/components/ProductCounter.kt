@@ -23,7 +23,6 @@ fun ProductCounter(
     incrementProductCount: () -> Unit,
     decreaseProductCount: () -> Unit,
     count: Int
-
 ) {
     Box(Modifier.background(color = Color.White, shape = RoundedCornerShape(20.dp))) {
         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
