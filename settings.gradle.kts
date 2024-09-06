@@ -7,3 +7,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Guajolotas"
 include(":app")
+include(":app:guajolota_models")
+include(":domain:guajolota_models")
