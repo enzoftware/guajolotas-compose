@@ -29,7 +29,10 @@ import kotlinx.coroutines.launch
 data class TabItem(val title: String, val onItemSelected: () -> Unit)
 
 @Composable
-fun TabBar(tabs: List<TabItem>, pagerState: PagerState) {
+fun TabBar(
+    tabs: List<TabItem>,
+    pagerState: PagerState,
+) {
     val coroutineScope = rememberCoroutineScope()
 
     TabRow(

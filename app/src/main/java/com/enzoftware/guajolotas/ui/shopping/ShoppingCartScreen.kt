@@ -82,6 +82,7 @@ fun ShoppingCartScreen(shoppingCartViewModel: ShoppingCartViewModel = hiltViewMo
                     shoppingCartViewModel.addProductToShoppingList(p)
                 }
             }
+
             is ShoppingCartUiModel.Error -> ErrorScreen(exception = (state as ShoppingCartUiModel.Error).exception)
         }
     }
