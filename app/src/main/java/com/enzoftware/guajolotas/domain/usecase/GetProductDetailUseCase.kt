@@ -2,7 +2,7 @@ package com.enzoftware.guajolotas.domain.usecase
 
 import com.enzoftware.guajolotas.core.ResultState
 import com.enzoftware.guajolotas.core.success
-import com.enzoftware.guajolotas.domain.models.Product
+import com.enzoftware.guajolotas.domain.models.ProductDetailModel
 import com.enzoftware.guajolotas.domain.models.ProductType
 import com.enzoftware.guajolotas.domain.repository.ProductRepository
 import javax.inject.Inject
@@ -29,8 +29,4 @@ class GetProductDetailUseCase @Inject constructor(private val repository: Produc
 
 }
 
-data class ProductDetailModel(
-    val selectedProductIndex: Int,
-    val productsCategory: List<Product>,
-    val complements: List<Product>,
-)
+
